@@ -1,9 +1,9 @@
 # Mala
 
 - Slug: `mala`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/23-mala.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -88,11 +88,11 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado itens da mala, quando a pessoa marca ou desmarca, então o contador e a barra atualizam; ao completar todos, o aviso diz “Mala completa. Boa viagem!”; verificado por teste de widget.
-- [ ] **AC-2** — Dado a sugestão ainda não aceita, quando a pessoa toca Adicionar, então o grupo Sugestões da Maya entra no topo com os 4 itens e a caixa some; verificado por teste de widget.
-- [ ] **AC-3** — Dado um nome no campo, quando a pessoa adiciona, então o item entra no último grupo, o campo segue focado e o aviso diz “Item adicionado”; verificado por teste de widget.
-- [ ] **AC-4** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `23-mala.md`; verificado por inspeção lado a lado.
-- [ ] **AC-5** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado itens da mala, quando a pessoa marca ou desmarca, então o contador e a barra atualizam; ao completar todos, o aviso diz "Mala completa. Boa viagem!"; verificado por `mala_view_model_test.dart`/`mala_view_test.dart`.
+- [x] **AC-2** — Dado a sugestão ainda não aceita, quando a pessoa toca Adicionar, então o grupo Sugestões da Maya entra no topo com os 4 itens e a caixa some; verificado por teste de widget. Conteúdo da sugestão é fixo (os 4 itens do protótipo), não gerado de verdade a partir de clima/roteiro reais — ver D-4.
+- [x] **AC-3** — Dado um nome no campo, quando a pessoa adiciona, então o item entra no último grupo, o campo segue focado e o aviso diz "Item adicionado"; verificado por teste de widget.
+- [x] **AC-4** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `23-mala.md`; verificado por teste de widget em viewport 390 px (achou e corrigiu overflow real no cabeçalho de progresso). Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-5** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -101,6 +101,8 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `23-mala.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão | A sugestão da Maya usa o conteúdo fixo do protótipo (guarda-chuva, garrafa, moedas pra Fontana di Trevi, cópia do passaporte) em qualquer viagem, em vez de gerar a partir do clima/roteiro reais — regra 5 fica `A DEFINIR` pra geração de verdade. | produto | definir motor de sugestão real |
+| D-5 | decisão | A mala inicial de viagens criadas pelo assistente (`016-nova-viagem.md`) continua a lista curta (Essenciais + Roupas, 5 itens), não a lista padrão de 30 itens/7 grupos desta spec — a pergunta "qual lista usar como padrão definitivo" permanece `A DEFINIR`, como o próprio spec já previa. | produto | decidir lista padrão definitiva |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

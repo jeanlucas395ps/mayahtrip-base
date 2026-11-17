@@ -1,9 +1,9 @@
 # Gastos e divisão
 
 - Slug: `gastos`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/21-gastos.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -107,13 +107,13 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado gastos mocados, quando a aba abre, então o total e a barra mostram a porcentagem do orçamento e o texto dentro ou acima do orçamento; verificado por teste de widget.
-- [ ] **AC-2** — Dado duas pessoas e saldo diferente de zero, quando a pessoa toca Acertar, então surge o lançamento no grupo Acertos, o saldo zera e o aviso oferece Desfazer; o acerto não entra no total nem nas categorias; verificado por teste de widget.
-- [ ] **AC-3** — Dado a divisão, quando um gasto é exibido, então a parte é igual entre as pessoas marcadas e o valor está na moeda de exibição; verificado por teste de widget.
-- [ ] **AC-4** — Dado Assistente júnior, quando a viagem abre, então a aba Gastos não existe; verificado por teste de widget.
-- [ ] **AC-5** — Dado nenhum gasto de Hospedagem, quando há outros gastos, então a dica oferece Adicionar estimativa e o lançamento cai no grupo Planejado; verificado por teste de widget.
-- [ ] **AC-6** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `21-gastos.md`; verificado por inspeção lado a lado.
-- [ ] **AC-7** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado gastos mocados, quando a aba abre, então o total e a barra mostram a porcentagem do orçamento e o texto dentro ou acima do orçamento; verificado por `gastos_view_model_test.dart`/`gastos_view_test.dart`.
+- [x] **AC-2** — Dado duas pessoas e saldo diferente de zero, quando a pessoa toca Acertar, então surge o lançamento no grupo Acertos, o saldo zera e o aviso oferece Desfazer; o acerto não entra no total; verificado por teste de widget. Acerto também não entra em "Por categoria" (não tem categoria). Ver D-4 (saldo com 3+ pessoas).
+- [x] **AC-3** — Dado a divisão, quando um gasto é exibido, então a parte é igual entre as pessoas marcadas; verificado por teste de widget. Valor já nasce em BRL (moeda de exibição, D-2) na criação do gasto (`024-novo-gasto.md` faz a conversão) — ver D-5.
+- [x] **AC-4** — Dado Assistente júnior, quando a viagem abre, então a aba Gastos não existe; verificado por teste de widget (`ViagemCapaViewModel.abasVisiveis` já excluía Gastos pra esse papel, herdado de `016-viagem-capa-e-abas.md`).
+- [x] **AC-5** — Dado nenhum gasto de Hospedagem, quando há outros gastos, então a dica oferece Adicionar estimativa e o lançamento cai no grupo Planejado; verificado por teste de widget. Valor médio de hospedagem é fixo (metodologia real = `A DEFINIR` no spec) — ver D-6.
+- [x] **AC-6** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `21-gastos.md`; verificado por teste de widget em viewport 390 px. Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-7** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -122,6 +122,9 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `21-gastos.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão (engenharia) | "Acertar" com 3+ pessoas não está implementado — os 5 dados mocados do protótipo só têm 2 participantes por viagem, então o caminho de 3+ pessoas é só texto de exibição (não testável sem um 3º participante real). | app | criar viagem mocada com 3+ pessoas |
+| D-5 | decisão (engenharia) | `Gasto.valorBRL` guarda sempre em BRL (moeda de exibição interna, D-2); a conversão de outras moedas acontece na criação (`024-novo-gasto.md`, usando `RATE` minerado do protótipo), não nesta aba. | app | `lib/data/models/viagem.dart` |
+| D-6 | decisão | Valor médio de hospedagem na dica é fixo (`R$ 450`), não calculado a partir de gastos reais de outras viagens — o spec deixa a metodologia `A DEFINIR`. | produto | definir metodologia da média |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

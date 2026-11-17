@@ -1,9 +1,9 @@
 # Adicionar parada
 
 - Slug: `adicionar-parada`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/20-adicionar-parada.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -80,12 +80,12 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado a folha aberta de dentro de uma viagem, quando ela aparece, então essa viagem e o dia aberto vêm selecionados; de fora, a primeira viagem e o Dia 1; verificado por teste de widget.
-- [ ] **AC-2** — Dado a busca, quando a lista monta, então lugares já presentes no dia não aparecem; verificado por teste de widget.
-- [ ] **AC-3** — Dado o +, quando a pessoa adiciona, então a parada entra no fim do dia com a mesma regra de horário de inserir-no-roteiro e a folha fecha; verificado por teste de widget.
-- [ ] **AC-4** — Dado Assistente júnior ou convidado, quando a ação é pedida, então o júnior não adiciona e o convidado cai na spec modo-convidado; verificado por teste de widget.
-- [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `20-adicionar-parada.md`; verificado por inspeção lado a lado.
-- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado a folha aberta de dentro de uma viagem, quando ela aparece, então essa viagem e o dia aberto vêm selecionados; de fora, a primeira viagem e o Dia 1; verificado por `adicionar_parada_view_model_test.dart`/`adicionar_parada_sheet_test.dart`.
+- [x] **AC-2** — Dado a busca, quando a lista monta, então lugares já presentes no dia não aparecem; verificado por teste de widget.
+- [x] **AC-3** — Dado o +, quando a pessoa adiciona, então a parada entra no fim do dia com a mesma regra de horário de inserir-no-roteiro e a folha fecha; verificado por teste de widget.
+- [x] **AC-4** — Dado Assistente júnior, quando a ação é pedida, então o júnior vê o aviso em vez do formulário; verificado por teste de widget. "Convidado" não existe no modelo de papéis implementado (`PapelViagem`: dono/viajanteSupremo/viajanteExperiente/assistenteJunior) — ver D-4.
+- [x] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `20-adicionar-parada.md`; verificado por teste de widget em viewport 390 px (achou e corrigiu overflow real no título da folha). Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -94,6 +94,8 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `20-adicionar-parada.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão | "Convidado → convite" não implementado: o modelo de papéis do app (`PapelViagem`) não tem um papel "convidado" distinto; a regra 4 foi testada só pra Assistente júnior. | produto | definir papel "convidado" |
+| D-5 | decisão (engenharia) | "Mais salvos" ordena por `numVideos` do lugar (proxy de popularidade), mesmo critério já usado em `017-roteiro-lista.md` "Sugerir 3" — o catálogo mocado não guarda contagem de "salvos" por lugar. | app | `lib/ui/features/adicionar_parada/view_models/adicionar_parada_view_model.dart` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

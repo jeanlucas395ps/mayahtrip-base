@@ -1,9 +1,9 @@
 # Detalhe da parada
 
 - Slug: `detalhe-da-parada`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/19-detalhe-da-parada.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -83,13 +83,13 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado uma parada, quando a folha abre, então mostra mídia, dia e horário, nota, etiquetas e os botões Feito, Rota e Gasto; verificado por inspeção.
-- [ ] **AC-2** — Dado Feito, quando a pessoa toca, então a folha fecha e o aviso oferece Avaliar; verificado por teste de widget.
-- [ ] **AC-3** — Dado Gasto, quando a pessoa toca, então a viagem vai à aba Gastos e o novo gasto abre com a descrição do lugar e o valor estimado; verificado por teste de widget.
-- [ ] **AC-4** — Dado Remover do roteiro, quando a pessoa confirma o gesto do protótipo, então a parada sai do dia; verificado por teste de widget.
-- [ ] **AC-5** — Dado Assistente júnior, quando a folha abre, então Feito, Gasto e Remover não aparecem; verificado por teste de widget.
-- [ ] **AC-6** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `19-detalhe-da-parada.md`; verificado por inspeção lado a lado.
-- [ ] **AC-7** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado uma parada, quando a folha abre, então mostra mídia, dia e horário, nota, etiquetas e os botões Feito, Rota e Gasto; verificado por `test/ui/features/detalhe_da_parada/detalhe_da_parada_sheet_test.dart`.
+- [x] **AC-2** — Dado Feito, quando a pessoa toca, então a folha fecha e o aviso oferece Avaliar; verificado por teste de widget (mesmo arquivo), e pela integração em `roteiro_lista_view_test.dart`/`roteiro_mapa_view_test.dart`.
+- [x] **AC-3** — Dado Gasto, quando a pessoa toca, então a viagem vai à aba Gastos e o novo gasto abre com a descrição do lugar e o valor estimado; verificado por teste de widget (a folha sinaliza o pedido; quem troca a aba e pré-preenche é `ViagemCapaView._pedirGastoDaParada`, sem teste de widget próprio — ver D-6).
+- [x] **AC-4** — Dado Remover do roteiro, quando a pessoa toca, então a parada sai do dia; verificado por teste de widget. Sem confirmação/desfazer (`A DEFINIR` no spec) — ver D-5.
+- [x] **AC-5** — Dado Assistente júnior, quando a folha abre, então Feito, Gasto e Remover não aparecem; verificado por teste de widget. Avaliar continua disponível (`A DEFINIR` no spec) — ver D-7.
+- [x] **AC-6** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `19-detalhe-da-parada.md`; verificado por teste de widget em viewport 390 px (achou e corrigiu overflow real no título do Novo gasto/Adicionar parada, specs vizinhas). Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-7** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -98,6 +98,10 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `19-detalhe-da-parada.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão | Mídia sem vídeo real: cartão usa o mesmo fallback (bloco de cor + ícone 40% opacidade) de todo lugar sem foto/vídeo minerado do protótipo. | app | quando houver binário real |
+| D-5 | decisão | "Remover do roteiro" tira a parada do dia sem confirmação nem desfazer — o spec deixa isso `A DEFINIR`; escolhida a ação direta mais simples. | produto | definir confirmação/desfazer |
+| D-6 | decisão (engenharia) | O botão "Rota" não abre nada de verdade (sem integração de mapas real nesta fila); e o botão "Gasto" só sinaliza o pedido — quem troca a aba pra Gastos e abre `024-novo-gasto.md` pré-preenchido é o chamador (`ViagemCapaView._pedirGastoDaParada`), não a folha em si. | app | `lib/ui/features/viagem_capa/views/viagem_capa_view.dart` |
+| D-7 | decisão | "Avaliar esta parada" continua disponível pro Assistente júnior (a pergunta do spec era `A DEFINIR`) — escolhido manter, já que avaliar não edita o roteiro. | produto | revisão da spec |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

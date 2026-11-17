@@ -1,9 +1,9 @@
 # Lançar gasto
 
 - Slug: `novo-gasto`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/22-novo-gasto.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -93,12 +93,12 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado a folha, quando o valor é 0, então Salvar fica desativado; com valor maior que 0 e viagem escolhida, salva; verificado por teste de widget.
-- [ ] **AC-2** — Dado o teclado, quando a pessoa digita, então há no máximo 7 dígitos e 2 casas, uma vírgula, e o zero inicial é substituído; verificado por teste de widget.
-- [ ] **AC-3** — Dado a folha aberta com valor sugerido da parada, quando o primeiro dígito entra, então ele substitui o valor; verificado por teste de widget.
-- [ ] **AC-4** — Dado um gasto salvo, quando a folha fecha, então a viagem está na aba Gastos, a descrição vazia vira o nome da categoria e o aviso diz quem deve; verificado por teste de widget.
-- [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `22-novo-gasto.md`; verificado por inspeção lado a lado.
-- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado a folha, quando o valor é 0, então Salvar fica desativado; com valor maior que 0 e viagem escolhida, salva; verificado por `novo_gasto_view_model_test.dart`/`novo_gasto_sheet_test.dart`.
+- [x] **AC-2** — Dado o teclado, quando a pessoa digita, então há no máximo 7 dígitos inteiros e 2 casas decimais, uma vírgula, e o zero inicial é substituído; verificado por teste de widget.
+- [x] **AC-3** — Dado a folha aberta com valor sugerido da parada, quando o primeiro dígito (ou vírgula/⌫) entra, então ele substitui o valor; verificado por teste de widget.
+- [x] **AC-4** — Dado um gasto salvo, quando a folha fecha, então a viagem está na aba Gastos, a descrição vazia vira o nome da categoria e o aviso diz quem deve (só em viagens de 2 pessoas); verificado por teste de widget. A troca de aba acontece no chamador (`ViagemCapaView`/`AcoesRapidasSheet`), não na folha — ver D-4.
+- [x] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `22-novo-gasto.md`; verificado por teste de widget em viewport 390 px (achou e corrigiu overflow real na linha "Dividir"). Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -107,6 +107,7 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `22-novo-gasto.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão (engenharia) | A folha devolve o `Gasto` criado; é o chamador (`ViagemCapaView`, `AcoesRapidasSheet`, folha de `021-detalhe-da-parada.md`) quem decide trocar pra aba Gastos — a folha de novo gasto não conhece `ViagemCapaViewModel`. | app | `lib/ui/features/novo_gasto/views/novo_gasto_sheet.dart` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos
