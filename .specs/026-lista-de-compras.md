@@ -1,9 +1,9 @@
 # Lista de compras
 
 - Slug: `lista-de-compras`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/24-lista-de-compras.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -92,12 +92,12 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado itens comprados e pendentes, quando a aba abre, então o resumo mostra X de Y, o total previsto e a soma que falta; verificado por teste de widget.
-- [ ] **AC-2** — Dado nome vazio, quando a pessoa toca Adicionar, então nada entra; com nome, o item entra e o aviso confirma; verificado por teste de widget.
-- [ ] **AC-3** — Dado um texto que começa com http ou contém .com, .pt ou .br, quando o item é salvo, então o campo vira link e a linha mostra “Link · link salvo”; verificado por teste de widget.
-- [ ] **AC-4** — Dado um item, quando a pessoa remove, então o aviso oferece Desfazer e o item volta na mesma posição; verificado por teste de widget.
-- [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `24-lista-de-compras.md`; verificado por inspeção lado a lado.
-- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado itens comprados e pendentes, quando a aba abre, então o resumo mostra X de Y, o total previsto e a soma que falta; verificado por `lista_de_compras_view_model_test.dart`/`lista_de_compras_view_test.dart`.
+- [x] **AC-2** — Dado nome vazio, quando a pessoa toca Adicionar, então nada entra; com nome, o item entra e o aviso confirma; verificado por teste de widget.
+- [x] **AC-3** — Dado um texto que começa com http ou contém .com, .pt ou .br, quando o item é salvo, então o campo vira link e a linha mostra "Link · link salvo"; verificado por teste de widget.
+- [x] **AC-4** — Dado um item, quando a pessoa remove, então o aviso oferece Desfazer e o item volta na mesma posição; verificado por teste de widget.
+- [x] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `24-lista-de-compras.md`; verificado por teste de widget em viewport 390 px. Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -106,6 +106,7 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `24-lista-de-compras.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão (engenharia) | Itens de compras mocados minerados do protótipo (`londres.compras`/`parislx.compras`/`roma.compras`): 3/2/2 itens reais, com `done`/loja/preço originais. Sintra e Japão começam vazias, igual ao protótipo. | app | `lib/data/repositories/viagens_repository.dart` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

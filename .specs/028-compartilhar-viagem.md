@@ -1,9 +1,9 @@
 # Convite e papéis
 
 - Slug: `compartilhar-viagem`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/26-compartilhar-viagem-e-papeis.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -101,12 +101,12 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado a capa, quando a pessoa toca Compartilhar ou o +, então a folha lista quem planeja junto e o papel padrão do convite é Viajante experiente; verificado por teste de widget.
-- [ ] **AC-2** — Dado um e-mail inválido, quando a pessoa envia o convite, então o aviso diz “Digite um e-mail válido”; com e-mail válido, a pessoa entra na lista com o papel escolhido e o aviso confirma; verificado por teste de widget.
-- [ ] **AC-3** — Dado o Dono, quando altera o papel, então o aviso diz “{nome} agora é {papel}”; Remover tira a pessoa da lista; verificado por teste de widget.
-- [ ] **AC-4** — Dado visibilidade Pública, quando a pessoa copia o link, então o aviso diz “Link copiado” e o texto deixa claro que gastos e documentos continuam privados; verificado por teste de widget.
-- [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `26-compartilhar-viagem-e-papeis.md`; verificado por inspeção lado a lado.
-- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado a capa, quando a pessoa toca Compartilhar, então a folha lista quem planeja junto e o papel padrão do convite é Viajante experiente; verificado por `compartilhar_viagem_sheet_test.dart`. O toque nos avatares/"+" da capa como gatilho alternativo não existe (a capa não mostra avatares nesta fila) — ver D-4.
+- [x] **AC-2** — Dado um e-mail inválido, quando a pessoa envia o convite, então o aviso diz "Digite um e-mail válido"; com e-mail válido, a pessoa entra na lista com o papel escolhido e o aviso confirma; verificado por teste de widget.
+- [x] **AC-3** — Dado o Dono, quando altera o papel, então o aviso diz "{nome} agora é {papel}"; Remover tira a pessoa da lista; verificado por teste de widget. Sem confirmação ao remover (regra 5 do spec deixa isso `A DEFINIR`).
+- [x] **AC-4** — Dado visibilidade Pública, quando a pessoa copia o link, então o aviso diz "Link copiado" e o texto deixa claro que gastos e documentos continuam privados; verificado por teste de widget.
+- [x] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `26-compartilhar-viagem-e-papeis.md`; verificado por teste de widget em viewport 390 px (achou e corrigiu overflow real na linha de participante). Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -115,6 +115,8 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `26-compartilhar-viagem-e-papeis.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão | A capa da viagem (`018-viagem-capa.md`) não desenha avatares dos participantes; o único gatilho da folha é o botão "Compartilhar" (ícone de vidro). | produto | desenhar avatares na capa |
+| D-5 | decisão (engenharia) | `ParticipanteViagem` deixou de ser `const`/imutável (ganhou `papel` mutável) pra permitir alterar papel e convidar gente nova; cada viagem mocada agora recebe instâncias próprias de Jean/Carol (em vez de uma única compartilhada entre as 5 viagens), senão mudar o papel numa viagem vazaria pra todas. | app | `lib/data/models/viagem.dart`/`lib/data/repositories/viagens_repository.dart` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

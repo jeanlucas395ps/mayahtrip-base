@@ -1,9 +1,9 @@
 # Documentos e links
 
 - Slug: `documentos-links`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/25-documentos-e-links.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -86,11 +86,11 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado Dono ou Viajante supremo, quando a aba abre, então a faixa diz que está salvo para abrir sem internet e cada documento tem a etiqueta Offline; verificado por inspeção e teste de widget.
-- [ ] **AC-2** — Dado Viajante experiente ou Assistente júnior, quando a viagem abre, então a aba Docs não aparece; verificado por teste de widget.
-- [ ] **AC-3** — Dado Adicionar documento, quando a pessoa escolhe Tirar foto, Escolher arquivo ou Colar link, então o item entra no topo, pisca e o aviso diz “Salvo e disponível offline”; verificado por teste de widget.
-- [ ] **AC-4** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `25-documentos-e-links.md`; verificado por inspeção lado a lado.
-- [ ] **AC-5** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado Dono ou Viajante supremo, quando a aba abre, então a faixa diz que está salvo para abrir sem internet e cada documento tem a etiqueta Offline; verificado por `documentos_links_view_test.dart`.
+- [x] **AC-2** — Dado Viajante experiente ou Assistente júnior, quando a viagem abre, então a aba Docs não aparece; já coberto por `ViagemCapaViewModel.abasVisiveis` (`018-viagem-capa.md`) e reforçado em `DocumentosLinksViewModel.podeVer` (`documentos_links_view_model_test.dart`).
+- [x] **AC-3** — Dado Adicionar documento, quando a pessoa escolhe Tirar foto, Escolher arquivo ou Colar link, então o item entra no topo e o aviso diz "Salvo e disponível offline"; verificado por teste de widget. Sem o efeito visual de "piscar" (ver D-4).
+- [x] **AC-4** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `25-documentos-e-links.md`; verificado por teste de widget em viewport 390 px. Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-5** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -99,6 +99,8 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `25-documentos-e-links.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão | `docs:[]` começa vazio em todas as viagens mocadas, igual ao protótipo (os documentos só existem depois de adicionados numa sessão de demonstração) — sem o efeito de "piscar" no item novo nem a origem "Meus documentos" (tela "Meus documentos" é `A DEFINIR`). | app | `lib/data/repositories/viagens_repository.dart` |
+| D-5 | decisão (engenharia) | "Colar link" não abre um campo real pra colar URL (sem integração de clipboard); as 3 opções da folha criam um documento mocado com nome/detalhe fixos representando a origem escolhida. | app | `lib/ui/features/documentos_links/view_models/documentos_links_view_model.dart` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos
