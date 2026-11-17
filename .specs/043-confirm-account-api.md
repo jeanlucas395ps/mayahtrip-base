@@ -1,9 +1,9 @@
 # Confirmar conta (API)
 
 - Slug: `confirm-account-api`
-- Status: `rascunho`
+- Status: `concluída` — confirmada e reenvio testados em 2026-11-17 (`mayahtrip-backend`, módulo `identidade`); o limite por IP desta spec ficou no guarda único de `048-rate-limit-api`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: TODO: pessoa/agente
 - Repositório: `mayahtrip-backend`
 - Docs relacionados: `.docs/BUSINESS/02-cadastro-e-verificacao.md`, `.docs/ARCHITECTURE.md`, `.docs/RULES.md`, `.docs/DEVELOPMENT.md`, `.docs/OBSERVABILITY.md`

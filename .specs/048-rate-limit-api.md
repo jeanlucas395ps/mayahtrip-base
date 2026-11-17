@@ -1,9 +1,9 @@
 # Limite de taxa da API
 
 - Slug: `rate-limit-api`
-- Status: `rascunho`
+- Status: `concluída` — um guarda para toda rota HTTP, testado em 2026-11-17 (`mayahtrip-backend`); o teto de produção continua em aberto e o teste injeta o limite
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-backend`
 - Docs relacionados: `.docs/ARCHITECTURE.md`, `.docs/DEVELOPMENT.md`, `.docs/OBSERVABILITY.md`, `.docs/RULES.md`

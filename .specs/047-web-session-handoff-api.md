@@ -1,9 +1,9 @@
 # Entrar no site a partir do app (handoff seguro)
 
 - Slug: `web-session-handoff-api`
-- Status: `rascunho`
+- Status: `concluída` — código opaco de uso único e troca por access+refresh testados em 2026-11-17 (`mayahtrip-backend`); os 60 s continuam a proposta, não uma decisão fechada
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: TODO: pessoa/agente
 - Repositório: `mayahtrip-backend`
 - Docs relacionados: `.docs/WEB/01-entrada-pelo-app.md`, `.docs/WEB/02-login.md`, `.docs/WEB/WEB.md`, `.docs/ARCHITECTURE.md`, `.docs/RULES.md`, `.docs/DEVELOPMENT.md`, `.docs/OBSERVABILITY.md`

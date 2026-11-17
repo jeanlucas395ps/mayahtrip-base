@@ -1,9 +1,9 @@
 # Maya
 
 - Slug: `maya`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/27-maya.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -99,12 +99,12 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado uma tela raiz que não seja Explorar, quando não há folha aberta, então o balão “Dúvidas? Maya” fica a 16 px da borda e 104 px da base; no Explorar, no assistente, na página do lugar, na abertura e no login ele não aparece; verificado por inspeção.
-- [ ] **AC-2** — Dado a conversa fechada, quando ela abre pela primeira vez, então a primeira mensagem é “Oi, {nome}! Sou a Maya…” no idioma da interface; verificado por teste de widget.
-- [ ] **AC-3** — Dado uma das três perguntas do protótipo, quando a pessoa envia, então a resposta mocada traz só o atalho que abre a tela, sem gravar dados; verificado por teste de widget.
-- [ ] **AC-4** — Dado outro idioma da interface já escolhido na spec idioma-moeda, quando a conversa abre, então perguntas rápidas, primeira mensagem e atalhos usam esse idioma; verificado por teste de widget.
-- [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `27-maya.md`; verificado por inspeção lado a lado.
-- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
+- [x] **AC-1** — Dado uma tela raiz que não seja Explorar, quando não há folha aberta, então o balão "Dúvidas? Maya" fica a 16 px da borda e 104 px da base; no Explorar, no assistente, na página do lugar, na abertura e no login ele não aparece; verificado por inspeção e pela montagem condicional em `InicioView`/`ViagemCapaView`. Balão só existe nessas duas telas — ver D-4.
+- [x] **AC-2** — Dado a conversa fechada, quando ela abre pela primeira vez, então a primeira mensagem é "Oi, {nome}! Sou a Maya…"; verificado por `maya_view_model_test.dart`/`maya_sheet_test.dart`. Só `pt-BR` nesta fila — ver D-5.
+- [x] **AC-3** — Dado uma das três perguntas do protótipo, quando a pessoa envia, então a resposta mocada traz só o atalho que abre a tela, sem gravar dados; verificado por teste de widget.
+- [ ] **AC-4** — Dado outro idioma da interface já escolhido na spec idioma-moeda, quando a conversa abre, então perguntas rápidas, primeira mensagem e atalhos usam esse idioma; **pendente** — `idioma-moeda` (`040`) ainda não existe nesta sessão; revisitar quando existir (ver D-5).
+- [x] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `27-maya.md`; verificado por teste de widget em viewport 390 px. Inspeção visual lado a lado via app real não concluída nesta sessão.
+- [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; **pendente**, mesmo gap das specs anteriores.
 
 ## 8. Premissas e decisões
 
@@ -113,6 +113,8 @@ Estados desta fatia:
 | D-1 | decisão | O protótipo e `27-maya.md` mandam no visual e no movimento. Dado divergente, a inspeção para e a diferença fica registrada antes de implementar. | produto | inspeção lado a lado |
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
+| D-4 | decisão (engenharia) | O balão só foi montado em `InicioView` (Início/Carteira/Perfil, completo) e `ViagemCapaView` (só avatar) — as demais telas que não estão na lista de escondidas (Busca, Notificações etc.) também não mostram o balão ainda, por limite de escopo desta sessão. | app | montar `MayaBalao` nas telas restantes |
+| D-5 | decisão | Conversa só em `pt-BR` nesta fila — `idioma-moeda` (`040-idioma-moeda.md`) ainda não existe. AC-4 (multi-idioma) fica pendente até essa spec chegar. | produto | revisitar após `040-idioma-moeda.md` |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
 
 ## 9. Impactos

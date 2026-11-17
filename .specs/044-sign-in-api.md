@@ -1,9 +1,9 @@
 # Entrar (API)
 
 - Slug: `sign-in-api`
-- Status: `rascunho`
+- Status: `concluída` — e-mail/senha, Google, refresh com rotação e revogação da família testados em 2026-11-17 (`mayahtrip-backend`); duração do refresh continua a proposta do ADR 0001
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: TODO: pessoa/agente
 - Repositório: `mayahtrip-backend`
 - Docs relacionados: `.docs/BUSINESS/01-login.md`, `.docs/WEB/02-login.md`, `.docs/ARCHITECTURE.md`, `.docs/RULES.md`, `.docs/DEVELOPMENT.md`, `.docs/OBSERVABILITY.md`

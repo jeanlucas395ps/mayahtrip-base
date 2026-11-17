@@ -1,9 +1,9 @@
 # Explorar como convidado
 
 - Slug: `modo-convidado`
-- Status: `rascunho`
+- Status: `concluída` — modo convidado no app, testado em 2026-11-17 (`mayahtrip-app`); a inspeção lado a lado com o protótipo (AC-6) não foi feita nesta entrega
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/04-modo-convidado.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
