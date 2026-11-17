@@ -7,13 +7,15 @@ Como um agente de código trabalha neste repositório e, depois, nos quatro repo
 1. `RULES.md` — plano, ADR, relatório, o que é proibido.
 2. `BUSINESS/BUSINESS.md` — propósito e regras globais. A tela específica está no arquivo numerado.
 3. `ARCHITECTURE.md` — stack e fronteiras entre os sistemas.
-4. O documento do tipo de tarefa: `DEVELOPMENT.md`, `DESIGN.md`, `DESIGN_SYSTEM.md`, `QA.md` ou `OBSERVABILITY.md`.
+4. `TECH/TECH.md` — quando a tarefa mexe em banco, fila, ingestão ou papel de administrador.
+5. O documento do tipo de tarefa: `DEVELOPMENT.md`, `DESIGN.md`, `DESIGN_SYSTEM.md`, `QA.md` ou `OBSERVABILITY.md`.
 
 ## 2. Onde está o código
 
 | Peça | Onde |
 | --- | --- |
-| Docs e skills | este repositório, pasta `.docs` e `.agents/skills` |
+| Docs | este repositório, pasta `.docs` |
+| Skills | `.agents/skills` na raiz do workspace. `.claude/skills` aponta para a mesma pasta |
 | App Flutter | https://github.com/jeanlucas395ps/mayahtrip-app.git |
 | API NestJS | https://github.com/jeanlucas395ps/mayahtrip-backend.git |
 | Painel Angular | https://github.com/jeanlucas395ps/mayahtrip-panel.git |
@@ -35,7 +37,7 @@ Não assuma biblioteca instalada. `ARCHITECTURE.md` lista a stack alvo. Se o rep
 
 ## 4. Skills que existem aqui
 
-Ficam em `.agents/skills` e estão travadas em `skills-lock.json`. Se a skill ideal não existir, use a mais próxima e diga qual usou. As skills deste repositório são as da tabela abaixo.
+Ficam em `.agents/skills` na raiz do workspace. `.claude/skills` é um atalho para essa mesma pasta, então Cursor e Claude leem o mesmo conjunto. Skills vindas de repositório externo também estão em `skills-lock.json`. Se a skill ideal não existir, use a mais próxima e diga qual usou. As skills deste workspace são as da tabela abaixo.
 
 | Tarefa | Skill |
 | --- | --- |
@@ -50,6 +52,9 @@ Ficam em `.agents/skills` e estão travadas em `skills-lock.json`. Se a skill id
 | Apertar uma proposta antes de construir | `grill-me` |
 | Corrigir gosto visual com aprovação | `learn-taste` |
 | Achar ou criar skill | `find-skills`, `skill-creator` |
+| Uma feature, spec ou contrato executável | `create-spec` |
+| Pedido com várias features (auth, CRUD, módulo) | `breakdown-specs`, que chama `create-spec` em modo fila, uma fatia por vez, sem pedir confirmação |
+| Relatório de progresso para produção | `progresso` |
 
 Não há skill de Angular, Postgres, Kafka nem observabilidade neste repositório. Nesses temas, siga `DEVELOPMENT.md`, `ARCHITECTURE.md` e `OBSERVABILITY.md`.
 

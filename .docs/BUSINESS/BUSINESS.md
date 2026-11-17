@@ -211,10 +211,9 @@ Detalhes de cada tela: arquivos numerados. Modo noturno: `33-aparencia.md`.
 
 ## 10. Pendências gerais (`A DEFINIR`)
 
-- Conteúdo e preço do plano PRO.
+- Preço e features do PRO são gravados pelo administrador em `PANEL/08-planos.md`. Não há preço padrão no código.
 - Preferências de notificação por tipo.
 - Permissões de convidar/remover para “Viajante supremo” e “Viajante experiente”.
-- Fonte oficial do câmbio do dia.
 - Limites de mídia por avaliação (quantidade, tamanho, duração de vídeo).
 - Política de moderação de denúncias (prazo, retorno ao denunciante).
 - Ordenação “Para você” do feed (algoritmo).

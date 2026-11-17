@@ -22,7 +22,7 @@
    - Publicações: **até 3** cartões; se houver mais, botão “Ver mais N publicações ›” → `29`.
    - Mídia: grade 3 colunas (proporção 4:5, espaço 4 px, raio 18 px no conjunto) com **até 9** itens; vídeos com duração. Mais de 9 → “Ver todas as N mídias ›”.
    - Menções: **até 5**; mais → “Ver todas as N menções ›”.
-8. **Plano** (bloco `#2B207F`, raio 22 px): coroa em quadrado lima 44 px · “Plano Free” · “Conheça os benefícios do plano PRO” · botão lima **Ver PRO** (conteúdo `A DEFINIR`).
+8. **Plano** (bloco `#2B207F`, raio 22 px): coroa em quadrado lima 44 px · nome do plano vigente · uma linha de apoio · botão lima. Free: “Conheça os benefícios do plano PRO” e **Ver PRO**. PRO: “Seu plano está ativo” e **Gerenciar plano**. Os dois botões abrem o site de planos no navegador do aparelho (`WEB/01`). O app não cobra.
 9. **Configurações** (cartão):
    - **Aparência** com segmentado Automático · Claro · Noturno (ver `33`).
    - Lugares onde já estive → `32` · Privacidade e bloqueios → `31` · Preferências de viagem (`A DEFINIR`) · Meus documentos (`A DEFINIR`) · **Idioma e moeda** (mostra “Minha localização” ou “Personalizado”) → `35` · Notificações → `06`.

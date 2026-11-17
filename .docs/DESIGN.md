@@ -552,8 +552,8 @@ Feed, abertura, login e fotos não mudam. Transição de fundo 400 ms.
 
 | Design | Flutter |
 | --- | --- |
-| Tokens de cor | `ThemeExtension` próprio + `ColorScheme` (primary = roxo, secondary = lima, surface = branco/`#19162E`, background = névoa/`#0E0C1D`) — estrutura exata `A DEFINIR` em plano |
-| Fontes | Plus Jakarta Sans e Instrument Serif empacotadas como assets (OFL) ou `google_fonts` — `A DEFINIR` |
+| Tokens de cor | `ThemeExtension` próprio (`MayahTripColors`), registrado em `ThemeData.extensions` para claro e noturno, com os nomes de `DESIGN.md` (roxo, lima, tinta noite, névoa etc.) — decidido em 2026-11-16, ver ADR em `mayahtrip-app/adrs/` |
+| Fontes | Plus Jakarta Sans e Instrument Serif empacotadas como assets (OFL) em `assets/fonts/` — decidido em 2026-11-16 (sem dependência de rede na abertura/telas iniciais), ver ADR em `mayahtrip-app/adrs/` |
 | Curvas | `Cubic(0.32, 0.72, 0, 1)`, `Cubic(0.2, 0.8, 0.2, 1)`, `Cubic(0.3, 1.5, 0.5, 1)` |
 | Folhas | `showModalBottomSheet` com `isScrollControlled`, raio 30, alça própria |
 | Tema | `ThemeMode.system` como padrão |
@@ -618,7 +618,7 @@ Regras confirmadas pelo Jean durante o desenho do protótipo.
 - **Don't** criar telas fora da paleta e dos tokens acima; valor novo precisa ser adicionado aqui primeiro.
 
 ## A DEFINIR
-- Pacote de ícones e estratégia de fontes no Flutter.
+- Pacote de ícones no Flutter (estratégia de fontes já decidida — ver seção Flutter mapping).
 - Fornecedor de mapas reais e estilo do mapa (claro/noturno).
 - Comportamento com fonte grande do sistema (Dynamic Type).
 - Layout para tablets e telas pequenas (< 360 px).

@@ -24,7 +24,7 @@ Crie `./adrs/NNNN-titulo-curto.md` (quatro dígitos, em sequência) quando a mud
 
 - incluir ou tirar dependência relevante;
 - mudar o contrato entre app, API e painel;
-- definir o que vai para Postgres, MongoDB, Redis ou Kafka;
+- definir o que vai para Postgres, Redis ou Kafka;
 - escolher auth, observabilidade ou integração que `ARCHITECTURE.md` ainda marca como aberta;
 - tiver alternativa que alguém vai perguntar de novo daqui a um mês.
 

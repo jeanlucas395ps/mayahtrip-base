@@ -41,7 +41,7 @@ Push e notificação in-app são um par (`BUSINESS.md` §4.1). Logar os dois res
 
 ## 4. Saúde
 
-Cada processo expõe saúde de processo (sobe / não sobe) e, separado, saúde das dependências (Postgres, MongoDB, Redis, Kafka). Orquestrador usa só a saúde de processo para reiniciar. Dependência fora não deve gerar restart em loop.
+Cada processo expõe saúde de processo (sobe / não sobe) e, separado, saúde das dependências (Postgres, Redis, Kafka). Orquestrador usa só a saúde de processo para reiniciar. Dependência fora não deve gerar restart em loop.
 
 ## 5. `A DEFINIR`
 

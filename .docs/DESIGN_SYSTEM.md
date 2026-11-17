@@ -50,11 +50,11 @@ Curva principal `cubic-bezier(.32, .72, 0, 1)`. Toque comprime para 0,96. Com re
 
 ## Flutter
 
-Mapeamento (ThemeExtension, fontes empacotadas versus `google_fonts`, pacote de ícones no estilo linha 24 px traço 2): `A DEFINIR` em `DESIGN.md`, seção Flutter mapping. Até lá, não escolha o pacote no meio de uma tela.
+Mapeamento: `ThemeExtension` próprio (cores) e fontes empacotadas como assets — decididos em 2026-11-16, ver `DESIGN.md` seção Flutter mapping e ADR em `mayahtrip-app/adrs/`. Pacote de ícones (estilo linha 24 px traço 2) continua `A DEFINIR`; não escolha no meio de uma tela.
 
 ## Não fechar sozinho
 
-- Pacote de ícones e como as fontes entram no app.
+- Pacote de ícones.
 - Mapa real (claro e noturno).
 - Fonte grande do sistema.
 - Tablet e largura menor que 360 px.

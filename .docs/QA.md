@@ -13,12 +13,19 @@ Gates antes de considerar uma mudança pronta. Os comandos abaixo são os que **
 
 ## 2. Repositórios de código
 
-Ainda não há scripts versionados para copiar aqui. Quando `mayahtrip-app`, `mayahtrip-backend`, `mayahtrip-panel` ou `mayahtrip-e2e` ganharem um comando real, ele entra nesta tabela com o verbo exato do `package.json`, `Makefile` ou `melos`. Até lá:
+Comandos reais, copiados do `package.json` de cada repositório assim que existirem. Ainda sem script: só o gate esperado.
+
+| Repo | Comando | Observação |
+| --- | --- | --- |
+| API (`mayahtrip-backend`) | `npm run test` | Vitest: domínio/caso de uso sem I/O, integração com Postgres real (`127.0.0.1:5432`), HTTP com `supertest` |
+| API (`mayahtrip-backend`) | `npm run typecheck` | `tsc --noEmit`, `strict: true` |
+| API (`mayahtrip-backend`) | `npm run build` | `esbuild` (bundle, `packages: external`); `tsc` só type-checa (`typecheck`), não emite — `ts-node`/`typeorm-ts-node-commonjs` não suportam TypeScript 7 nesta máquina |
+| API (`mayahtrip-backend`) | `npm run migration:run` | `tsx scripts/run-migrations.ts`. Aplica migration pendente no Postgres configurado em `.env` (copiar de `.env.example`) |
+| API (`mayahtrip-backend`) | `npm run migration:revert` | `tsx scripts/revert-migration.ts`. Migrations são escritas à mão (sem `migration:generate` por ora, mesma causa do `ts-node`) |
 
 | Repo | Gate esperado (ainda sem script) |
 | --- | --- |
 | App | Analisador Dart, testes do ViewModel/repositório, build do flavor que o repo definir |
-| API | Vitest, build Nest, lint do TypeScript |
 | Painel | Vitest, build Angular, Playwright das telas que existirem |
 | E2E | Playwright dos fluxos críticos |
 
