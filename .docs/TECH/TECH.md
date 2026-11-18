@@ -131,7 +131,9 @@ Regras fechadas:
 - Idioma da conta é um dos quatro: `pt-BR`, `pt-PT`, `en`, `es`. Sem localização, ou país fora da lista de `BUSINESS/35`, o padrão é `pt-BR` e BRL.
 - Exclusão de usuário do app é lógica. Dá para restaurar (`PANEL/`).
 
-`A DEFINIR`: perfil privado e pedido de follow. Detecção automática de país e cidade visitados. `user_visited_*` guarda o que a pessoa marcou (`BUSINESS/32`). A coluna `visit_source` só discrimina origem quando a regra de detecção existir.
+`A DEFINIR`: pedido de follow em perfil privado.
+
+País e cidade visitados: marcação manual ou a viagem criada para aquele lugar, com `visit_source` `manual` ou `trip`. Um país e uma cidade por pessoa. Viagem com data já passada grava as duas tabelas. Viagem futura não entra nelas; conta como planejada (`BUSINESS/32`).
 
 ### 4.2. Geography
 
@@ -605,7 +607,7 @@ Não implementar por suposição.
 | Documentos pessoais | A tela “Meus documentos”. Os tipos e a carteira já estão em `identity.user_documents` |
 | Mala | Lista padrão definitiva, mala individual, editar e remover item, CRUD no painel |
 | Câmbio | Por quanto tempo a taxa fica gravada e quando atualiza. A fonte já é Frankfurter |
-| Visitados | Como detectar país e cidade sem marcação manual |
+| Visitados | A barra por continente. A marca manual e a viagem passada já gravam `user_visited_*` |
 | Denúncia | Prazo máximo e retorno além da notificação já fechada |
 | Push | Provedor |
 | Notificação | Preferência por tipo. Hoje o usuário recebe todas, nos dois canais |
