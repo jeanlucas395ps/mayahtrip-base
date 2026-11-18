@@ -76,7 +76,7 @@ O painel fala com a API. Não publica em tópico a partir do browser.
 
 Fotos de perfil, mídias de avaliação, mídias do catálogo e documentos da viagem.
 
-Documento de viagem fica disponível offline no aparelho e não aparece no painel. Documento pessoal do perfil (“Meus documentos”) é `A DEFINIR` e não tem tabela enquanto isso.
+Documento de viagem fica disponível offline no aparelho e não aparece no painel. Documento pessoal do perfil é CPF, CNH, passagem de ônibus ou de avião, em imagem ou PDF, e fica em `identity.user_documents`. A carteira digital só entra quando há código legível. O painel não lê essa tabela. A tela “Meus documentos” continua `A DEFINIR`.
 
 Política de retenção e exclusão de mídia: `A DEFINIR`.
 
@@ -602,7 +602,7 @@ Não implementar por suposição.
 | Gastos | Regra da divisão desigual |
 | Participante | O que fica visível depois da saída |
 | Convite | Convidar e remover para supremo e experiente. Confirmação de remoção. Convite pendente. Link. Transferir posse |
-| Documentos pessoais | “Meus documentos” do perfil |
+| Documentos pessoais | A tela “Meus documentos”. Os tipos e a carteira já estão em `identity.user_documents` |
 | Mala | Lista padrão definitiva, mala individual, editar e remover item, CRUD no painel |
 | Câmbio | Por quanto tempo a taxa fica gravada e quando atualiza. A fonte já é Frankfurter |
 | Visitados | Como detectar país e cidade sem marcação manual |
