@@ -14,4 +14,4 @@
 ## Regras
 - Campo deixado vazio mantém o valor anterior.
 - “@” digitado no início do usuário é removido.
-- Unicidade e caracteres permitidos do usuário: `A DEFINIR`.
+- Usuário único sem distinguir maiúscula. Letras, números, ponto, underline e hífen, de 1 a 80. Fechado em 18 Nov 2026.
