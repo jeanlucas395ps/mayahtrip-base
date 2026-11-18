@@ -323,7 +323,7 @@ Documentos: viagem, quem enviou, chave no storage, nome, mime, tamanho, data. O 
 
 Toda notificação existe na central e sai em push. Não há canal só de um lado (`BUSINESS.md` §4.1). O usuário recebe todas.
 
-Provedor de push: `A DEFINIR`. Preferência por tipo: `A DEFINIR` em `BUSINESS.md` §10. Enquanto isso, não há tabela de preferência.
+Provedor de push: Firebase FCM. A credencial fica em variável de ambiente e o envio espera essa variável. Preferência por tipo: `A DEFINIR` em `BUSINESS.md` §10. Enquanto isso, não há tabela de preferência.
 
 ### 4.10. Subscription
 

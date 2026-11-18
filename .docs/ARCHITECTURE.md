@@ -146,7 +146,7 @@ Pontos ainda sem decisão. Não preencha no código.
 
 1. Nome dos tópicos Kafka, contrato dos eventos, e o que mais entra no Redis além da revogação. Lista completa em `TECH/TECH.md` §10.
 2. Prazo máximo para analisar uma denúncia (`PANEL/19`).
-3. Provedor de push. A notificação in-app e o push saem juntos; o fornecedor do push ainda não tem nome.
+3. Credencial do Firebase FCM. A notificação in-app e o push saem juntos; o fornecedor é o FCM, e o token entra por variável de ambiente.
 4. Modelo, contexto e limite de uso da Maya.
 5. Framework do site de planos (`WEB/`).
 6. Endereço público desse site.
