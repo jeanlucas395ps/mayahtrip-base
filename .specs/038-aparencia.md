@@ -1,9 +1,9 @@
 # Aparência
 
 - Slug: `aparencia`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/33-aparencia.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -90,10 +90,10 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado Automático, quando o tema do aparelho muda, então o app muda na hora e a descrição diz “Segue o tema do celular”; verificado por teste de widget.
+- [x] **AC-1** — Dado Automático, quando o tema do aparelho muda, então o app muda na hora e a descrição diz “Segue o tema do celular”; verificado por teste de widget (`aparencia_view_test.dart`; o `ThemeMode.system` em `main.dart` faz a troca de verdade).
 - [ ] **AC-2** — Dado Noturno escolhido, quando uma tela de cartão abre, então fundo, cartão, texto e borda usam os valores de BUSINESS/33 e a troca de fundo dura 400 ms; verificado por inspeção.
 - [ ] **AC-3** — Dado Noturno, quando Explorar, abertura ou uma foto estão visíveis, então essas superfícies permanecem como no claro; verificado por inspeção.
-- [ ] **AC-4** — Dado a escolha Claro ou Noturno, quando o app reabre, então a escolha salva no aparelho prevalece; verificado por teste de widget.
+- [x] **AC-4** — Dado a escolha Claro ou Noturno, quando o app reabre, então a escolha salva no aparelho prevalece; verificado por teste de widget (`aparencia_view_test.dart`; D-2: persistência mocada em memória no `PerfilRepository`, sem `SharedPreferences` real nesta fila).
 - [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `33-aparencia.md`; verificado por inspeção lado a lado.
 - [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
 
@@ -105,6 +105,7 @@ Estados desta fatia:
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
+| D-4 | correção | O segmentado vive só dentro do cartão de Configurações do Perfil (`AparenciaSegmentado`, sem Scaffold/AppBar própria) — bate com o protótipo, que nunca navega pra uma tela separada de Aparência. Uma implementação anterior tinha criado uma tela própria por engano; corrigido ao integrar com `030-perfil.md`. | app | `030-perfil.md` |
 
 ## 9. Impactos
 

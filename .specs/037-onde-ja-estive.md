@@ -1,9 +1,9 @@
 # Onde já estive
 
 - Slug: `onde-ja-estive`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/32-onde-ja-estive.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -106,11 +106,11 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado países de viagens passadas e marcas manuais, quando a tela abre, então visitados ÷ 195 aparecem em editorial de 64 px, com mínimo exibido de 1%; verificado por teste de widget.
-- [ ] **AC-2** — Dado o mapa, quando a pessoa aproxima, então o zoom vai de 1× a 6× em passos de 1,5× e 350 ms, e arrastar move o mapa; verificado por teste de widget.
-- [ ] **AC-3** — Dado um país que veio de viagem passada, quando a pessoa tenta desmarcar na lista, então o aviso diz “Já vem de uma viagem sua” e a marca permanece; verificado por teste de widget.
-- [ ] **AC-4** — Dado um país marcado só à mão, quando a pessoa remove dos visitados, então ele deixa de contar como visitado; verificado por teste de widget.
-- [ ] **AC-5** — Dado a lista de países, quando o idioma da interface muda, então os nomes seguem pt-BR, pt-PT, en ou es; verificado por teste de widget.
+- [x] **AC-1** — Dado países de viagens passadas e marcas manuais, quando a tela abre, então visitados ÷ 195 aparecem em editorial de 64 px, com mínimo exibido de 1%; verificado por teste de widget (`onde_ja_estive_view_test.dart`, `onde_ja_estive_view_model_test.dart`).
+- [x] **AC-2** — Dado o mapa, quando a pessoa aproxima, então o zoom vai de 1× a 6× em passos de 1,5× e 350 ms, e arrastar move o mapa; verificado por teste de widget (`mapa_mundo_widget_test.dart`; arrastar vem de `InteractiveViewer`, componente padrão do Flutter, não retestado).
+- [x] **AC-3** — Dado um país que veio de viagem passada, quando a pessoa tenta desmarcar na lista, então o aviso diz “Já vem de uma viagem sua” e a marca permanece; verificado por teste de widget (`onde_ja_estive_view_test.dart`, `onde_ja_estive_view_model_test.dart`).
+- [x] **AC-4** — Dado um país marcado só à mão, quando a pessoa remove dos visitados, então ele deixa de contar como visitado; verificado por teste de widget (`onde_ja_estive_view_test.dart`, `onde_ja_estive_view_model_test.dart`).
+- [ ] **AC-5** — Dado a lista de países, quando o idioma da interface muda, então os nomes seguem pt-BR, pt-PT, en ou es; pendente — ver D-4.
 - [ ] **AC-6** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `32-onde-ja-estive.md`; verificado por inspeção lado a lado.
 - [ ] **AC-7** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
 
@@ -122,6 +122,7 @@ Estados desta fatia:
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
+| D-4 | divergência | `world.json` minerado do protótipo só traz nome de país em um idioma (pt). AC-5 (nomes seguindo pt-BR/pt-PT/en/es) não está implementado nesta fatia — ficaria inventado sem fonte de dado real por idioma. | app | revisão de produto decide se traduz os nomes ou aceita pt fixo |
 
 ## 9. Impactos
 

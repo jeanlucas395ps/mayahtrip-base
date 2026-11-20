@@ -1,9 +1,9 @@
 # Perfil
 
 - Slug: `perfil`
-- Status: `rascunho`
+- Status: `em execução`
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-17
 - Responsável: produto
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/28-perfil.md`, `.docs/BUSINESS/BUSINESS.md`, `.docs/DESIGN.md`, `.docs/prototype`
@@ -104,10 +104,10 @@ Estados desta fatia:
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado o perfil, quando ele abre, então a capa tem 200 px, a foto circular 104 px sobrepõe 52 px e os contadores de seguidores e seguindo navegam para a spec seguidores; verificado por inspeção e teste de widget.
-- [ ] **AC-2** — Dado mais de 3 publicações, quando a aba Publicações do perfil mostra a prévia, então aparecem até 3 cartões e o botão Ver mais abre a spec minhas-publicacoes; mídia até 9 e menções até 5 seguem a mesma regra; verificado por teste de widget.
-- [ ] **AC-3** — Dado o bloco do plano, quando a pessoa toca Ver PRO ou Gerenciar plano, então o app pede a abertura do site de planos no navegador e não mostra cobrança; verificado por teste de widget.
-- [ ] **AC-4** — Dado Sair, quando a pessoa confirma o toque, então a sessão local acaba e o app volta ao login; verificado por teste de widget.
+- [x] **AC-1** — Dado o perfil, quando ele abre, então a capa tem 200 px, a foto circular 104 px sobrepõe 52 px e os contadores de seguidores e seguindo navegam para a spec seguidores; verificado por teste de widget (`perfil_view_test.dart`).
+- [x] **AC-2** — Dado mais de 3 publicações, quando a aba Publicações do perfil mostra a prévia, então aparecem até 3 cartões e o botão Ver mais abre a spec minhas-publicacoes; mídia até 9 e menções até 5 seguem a mesma regra; verificado por teste de widget (`perfil_view_test.dart`, `perfil_view_model_test.dart`).
+- [x] **AC-3** — Dado o bloco do plano, quando a pessoa toca Ver PRO ou Gerenciar plano, então o app pede a abertura do site de planos no navegador e não mostra cobrança; verificado por teste de widget. D-4: igual ao protótipo, o toque só mostra um aviso mocado ("Planos (mock)") — não há navegador real nem cobrança nesta fila.
+- [x] **AC-4** — Dado Sair, quando a pessoa confirma o toque, então a sessão local acaba e o app volta ao login; verificado por teste de widget (`perfil_view_test.dart`). D-5: igual ao protótipo (`data-a="logout"`), o toque desliga a sessão direto, sem folha de confirmação.
 - [ ] **AC-5** — Dado o frame 390×844 e os dados mocados do protótipo, quando esta tela está visível, então alinhamento, espaçamento, tipografia e cor coincidem com `.docs/prototype` e com `28-perfil.md`; verificado por inspeção lado a lado.
 - [ ] **AC-6** — Dado reduzir movimento ativo no aparelho, quando esta tela anima, então as durações caem para cerca de 0 ms; verificado por inspeção.
 
@@ -119,6 +119,9 @@ Estados desta fatia:
 | D-2 | decisão | Dados mocados, código de verificação `1234`, usuário Jean Lucas quando a tela pede alguém logado. | produto | comparar com o protótipo |
 | D-3 | decisão | `A DEFINIR` não é implementado como regra nova. | produto | revisão da spec |
 | P-1 | premissa | A fundação visual da spec `abertura` já existe quando esta fatia for implementada, salvo na própria abertura. | app | a spec `abertura` concluída |
+| D-4 | divergência | "Lugares" e "Km viajados" da Jornada são `A DEFINIR` no protótipo (`BUSINESS.md`); ficam com o mesmo valor fixo mocado que `SCREENS.profile` usa (38 e "21k"), sem regra nova inventada. | produto | revisão de produto decide a regra real |
+| D-5 | divergência | Faltam ícones SVG reais pra Continentes/Países/Km/coroa do plano/modo noturno/documentos/idioma-moeda — o catálogo de `assets/icons/` não os tem. Usados os mais próximos já existentes (`map`/`pin`/`compass`/`star`/`bulb`/`bookmark`) em vez de inventar um novo arquivo SVG. | design | design entrega os ícones reais e a tela troca |
+| D-6 | decisão | `038-aparencia.md`'s segmentado foi corrigido pra viver só dentro do cartão de Configurações do Perfil (`AparenciaSegmentado`), sem Scaffold/AppBar própria — bate com o protótipo, que nunca navega pra uma tela separada de Aparência. | app | `038-aparencia.md` |
 
 ## 9. Impactos
 

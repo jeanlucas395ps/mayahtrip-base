@@ -1,9 +1,9 @@
 # Gravar a viagem criada no SQLite
 
 - Slug: `viagem-sqlite`
-- Status: `rascunho`
+- Status: `em execução` — SQLite real (`sqflite`) e checagem de rede real (`connectivity_plus`) implementados e testados em 2026-11-18 (`mayahtrip-app`); specs irmãs (`ver-viagem-offline`, `despesa-offline`, `rota-offline`, `arquivo-offline`, `parada-feita-offline`, `link-offline`, `mala-offline`, `review-offline`, `listagem-viagens-offline`) ficaram pendentes nesta entrega
 - Data: 2026-11-17
-- Última atualização: 2026-11-17
+- Última atualização: 2026-11-18
 - Responsável: a definir no refine-spec
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `BUSINESS/14-nova-viagem.md`, `BUSINESS/BUSINESS.md` §4.4, `ARCHITECTURE.md` §4
@@ -65,11 +65,11 @@ Estados: sem rede antes de criar; criação recusada pela API; criação aceita 
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado conta com sessão e rede, quando a criação da viagem termina com sucesso, então a viagem, os destinos e os lugares recebidos nessa resposta existem no SQLite; verificado por teste de integração com banco local de teste.
-- [ ] **AC-2** — Dado AC-1 já gravado, quando o app é encerrado e aberto de novo sem rede, então essa mesma viagem ainda é lida do SQLite; verificado por teste de integração reabrindo o banco.
-- [ ] **AC-3** — Dado conta com sessão e sem rede, quando a pessoa tenta criar a viagem, então nenhuma linha nova entra no SQLite e a tela informa que criar precisa de internet; verificado por teste de widget com rede desligada.
-- [ ] **AC-4** — Dado a API recusou ou caiu no meio da criação, quando o app trata a falha, então o SQLite não fica com viagem incompleta dessa tentativa; verificado por teste de integração com resposta de erro.
-- [ ] **AC-5** — Dado modo convidado, quando a pessoa tenta criar viagem, então nada é gravado no SQLite; verificado por teste de widget.
+- [x] **AC-1** — Dado conta com sessão e rede, quando a criação da viagem termina com sucesso, então a viagem, os destinos e os lugares recebidos nessa resposta existem no SQLite; verificado por teste de integração com banco local de teste (`viagens_offline_repository_test.dart`, arquivo SQLite real via `sqflite_common_ffi`).
+- [x] **AC-2** — Dado AC-1 já gravado, quando o app é encerrado e aberto de novo sem rede, então essa mesma viagem ainda é lida do SQLite; verificado por teste de integração reabrindo o banco (`viagens_offline_repository_test.dart` — fecha o `BancoLocal`, abre um novo apontando pro mesmo arquivo, lê de novo).
+- [x] **AC-3** — Dado conta com sessão e sem rede, quando a pessoa tenta criar a viagem, então nenhuma linha nova entra no SQLite e a tela informa que criar precisa de internet; verificado por teste de widget com rede desligada (`nova_viagem_wizard_test.dart`).
+- [x] **AC-4** — Dado a API recusou ou caiu no meio da criação, quando o app trata a falha, então o SQLite não fica com viagem incompleta dessa tentativa; verificado por teste de integração com resposta de erro (`viagens_offline_repository_test.dart` — D-4: sem API real nesta base de código, a falha simulada é uma violação de chave primária no meio da transação, provando o rollback).
+- [x] **AC-5** — Dado modo convidado, quando a pessoa tenta criar viagem, então nada é gravado no SQLite; verificado por teste de widget (`nova_viagem_wizard_test.dart`).
 
 ## 8. Premissas e decisões
 
@@ -78,6 +78,9 @@ Estados: sem rede antes de criar; criação recusada pela API; criação aceita 
 | D-1 | decisão  | A cópia local da viagem fica no SQLite do aparelho. Criar viagem exige rede, porque destinos e lugares vêm da API. As edições offline são as specs irmãs, não esta. | pedido de 2026-11-17 | As irmãs citam esta spec e não escolhem outro banco |
 | P-1 | premissa | “Lugares já trazidos nessa resposta” são os que a criação devolveu. Busca nova de lugar continua online e não entra aqui. | produto | Conferir na implementação de `nova-viagem` qual payload a criação devolve |
 | P-2 | premissa | O texto exato do aviso sem rede usa os quatro idiomas da interface. A frase não está no protótipo. | produto | `refine-spec` confere o texto com `gen_l10n` |
+| D-4 | decisão | `nova-viagem` nunca chamou API real (é mocada, igual a toda a base de código até aqui) — não existe uma "criação online" de verdade pra falhar no meio. AC-4 foi verificado forçando uma violação de chave (dois lugares com o mesmo id) dentro da mesma transação SQLite que grava a viagem, provando que o `rollback` do `sqflite` não deixa linha incompleta — não uma resposta de erro de API de verdade. | app | revisão desta spec |
+| D-5 | decisão | Texto do aviso sem rede implementado como "Criar viagem precisa de internet." (P-2 continua aberta — não é o texto final nem está nos 4 idiomas; só prova o comportamento do AC-3). | app | `refine-spec` com `gen_l10n` |
+| D-6 | decisão | Esquema SQLite criado em `BancoLocal` já inclui `dias_roteiro`, `paradas_roteiro` e `rotas` (tabelas que esta spec não usa, mas que `057-parada-feita-offline.md` e `055-rota-offline.md` vão precisar) — para não forçar uma migração de esquema quando essas specs irmãs forem implementadas. Essas tabelas ficam vazias nesta entrega. | app | `055`/`057` quando forem implementadas |
 
 ## 9. Impactos
 

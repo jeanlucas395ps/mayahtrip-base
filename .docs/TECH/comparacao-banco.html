@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comparação dos bancos — MayahTrip</title>
+  <style>
+    :root {
+      --ink: #15122e;
+      --mut: #5e5a73;
+      --bg: #f4f3f8;
+      --card: #ffffff;
+      --line: #e5e3ec;
+      --lime: #c9ff27;
+      --pri: #2b207f;
+      --ok: #3a6b00;
+      --bad: #962a10;
+      --warn: #8a5a00;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.45 "Avenir Next", "Segoe UI", sans-serif;
+    }
+    header {
+      padding: 28px 32px 8px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-family: Palatino, "Iowan Old Style", Georgia, serif;
+      font-weight: 500;
+      font-size: 34px;
+      letter-spacing: -0.03em;
+    }
+    header p { margin: 0; color: var(--mut); max-width: 760px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 20px 32px;
+    }
+    .stat {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+    .stat b { display: block; font-size: 28px; letter-spacing: -0.04em; }
+    .stat span { color: var(--mut); font-size: 13px; }
+    .bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 0 32px 16px;
+      flex-wrap: wrap;
+    }
+    button.chip, input {
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font: inherit;
+    }
+    button.chip[aria-pressed="true"] {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+    input { min-width: 240px; border-radius: 12px; }
+    main {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 16px;
+      padding: 0 32px 40px;
+      align-items: start;
+    }
+    .list, .detail {
+      background: var(--card);
+      border-radius: 20px;
+    }
+    .list { padding: 8px; max-height: calc(100vh - 40px); overflow: auto; position: sticky; top: 16px; }
+    button.row {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      background: transparent;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      color: inherit;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+    button.row[aria-current="true"] { background: #f1effa; }
+    button.row small { color: var(--mut); }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border-radius: 999px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .igual { background: #eef8d8; color: var(--ok); }
+    .regra { background: #e7e4f8; color: var(--pri); }
+    .diverge { background: #fff1d6; color: var(--warn); }
+    .nosso { background: var(--lime); color: var(--ink); }
+    .enviado { background: #f8e4df; color: var(--bad); }
+    .detail { padding: 22px 24px 28px; }
+    .detail h2 { margin: 0 0 8px; font-size: 22px; }
+    .note { color: var(--mut); margin: 0 0 18px; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .cols section { background: var(--bg); border-radius: 14px; padding: 12px 14px; }
+    .cols h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mut); }
+    .cols li { margin: 4px 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+    ul { margin: 0; padding-left: 18px; }
+    .empty { color: var(--mut); list-style: none; margin-left: -18px; }
+    @media (max-width: 980px) {
+      .stats, main { grid-template-columns: 1fr; }
+      .list { position: static; max-height: 320px; }
+      .cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dois bancos, um produto</h1>
+    <p>O arquivo enviado contra <code>mayahtrip.sql</code>, lido de BUSINESS/, PANEL/ e TECH/TECH.md em 18 nov 2026. Coluna igual é o mesmo nome. O que ainda está em aberto não foi criado no nosso para antecipar a decisão.</p>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <button class="chip" data-kind="todos" aria-pressed="true">Tudo</button>
+    <button class="chip" data-kind="diverge">Diverge</button>
+    <button class="chip" data-kind="nosso">Só no nosso</button>
+    <button class="chip" data-kind="enviado">Só no enviado</button>
+    <button class="chip" data-kind="regra">Mesma coluna, outra regra</button>
+    <button class="chip" data-kind="igual">Iguais</button>
+    <input id="q" placeholder="Buscar tabela ou coluna" />
+  </div>
+  <main>
+    <div class="list" id="list"></div>
+    <div class="detail" id="detail"></div>
+  </main>
+  <script>
+    const rows = [{"key":"admin.admin_audit_logs","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","admin_user_id","action","entity_type","entity_id","old_values","new_values","ip_address","created_at"]},{"key":"admin.admin_login_attempts","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","email","ip_address","successful","attempted_at"]},{"key":"admin.admin_permissions","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","permission_key","description"]},{"key":"admin.admin_role_permissions","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["role_id","permission_id"]},{"key":"admin.admin_roles","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","name","description","created_at"]},{"key":"admin.admin_sessions","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","admin_user_id","token_hash","ip_address","expires_at","revoked_at","created_at"]},{"key":"admin.admin_user_roles","schema":"admin","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["admin_user_id","role_id"]},{"key":"admin.admin_users","schema":"admin","kind":"diverge","note":"O painel pede conta própria, com nome, e-mail e senha, que não entra no app. O enviado liga o administrador à conta de quem viaja.","onlyOurs":["name","email","password_hash","deleted_at"],"onlyTheirs":["user_id","username"],"both":["id","is_active","last_login_at","created_at"]},{"key":"catalog.place_addresses","schema":"catalog","kind":"nosso","note":"Só no nosso. Bairro, linha e CEP da ficha do lugar.","onlyOurs":["id","place_id","line1","neighborhood","postal_code","city_id"],"onlyTheirs":[],"both":[]},{"key":"catalog.place_categories","schema":"catalog","kind":"diverge","note":"O nome da categoria fica na tradução, nos quatro idiomas. O enviado guarda o nome na tabela base.","onlyOurs":[],"onlyTheirs":["name"],"both":["id","parent_id","slug","created_at"]},{"key":"catalog.place_category_relations","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["place_id","category_id"]},{"key":"catalog.place_category_translations","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","category_id","locale","name"]},{"key":"catalog.place_community_tips","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","user_id","content","created_at","updated_at"]},{"key":"catalog.place_external_references","schema":"catalog","kind":"diverge","note":"","onlyOurs":["provider_metadata"],"onlyTheirs":[],"both":["id","place_id","provider","external_id","external_url","last_synced_at"]},{"key":"catalog.place_media","schema":"catalog","kind":"diverge","note":"","onlyOurs":[],"onlyTheirs":["source_id"],"both":["id","place_id","media_type","storage_key","external_url","attribution","sort_order","created_at"]},{"key":"catalog.place_opening_hours","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","weekday","opening_time","closing_time","is_closed"]},{"key":"catalog.place_price_information","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","currency","price_level","minimum_price","maximum_price","updated_at"]},{"key":"catalog.place_ratings_summary","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","average_rating","total_reviews","updated_at"]},{"key":"catalog.place_translations","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","locale","name","description"]},{"key":"catalog.place_visit_information","schema":"catalog","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","place_id","recommended_duration_minutes","best_time_to_visit","accessibility_information","updated_at"]},{"key":"catalog.places","schema":"catalog","kind":"diverge","note":"O nosso tem slug e endereço em tabela própria. O enviado guarda o endereço num texto.","onlyOurs":["slug"],"onlyTheirs":["address"],"both":["id","city_id","name","description","latitude","longitude","website_url","phone","status","created_at","updated_at"]},{"key":"community.comment_likes","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["comment_id","user_id","created_at"]},{"key":"community.comments","schema":"community","kind":"regra","note":"Os dois permitem resposta. O nosso recusa um terceiro nível.","onlyOurs":[],"onlyTheirs":[],"both":["id","post_id","user_id","parent_comment_id","content","created_at","updated_at","deleted_at"]},{"key":"community.place_review_media","schema":"community","kind":"diverge","note":"","onlyOurs":["width","height","duration_seconds","byte_size","is_cover"],"onlyTheirs":[],"both":["id","review_id","media_type","storage_key","created_at"]},{"key":"community.place_reviews","schema":"community","kind":"diverge","note":"Nota de 1 a 5. A nossa linha aponta para a publicação do feed.","onlyOurs":["post_id"],"onlyTheirs":[],"both":["id","place_id","user_id","rating","review_text","status","created_at","updated_at"]},{"key":"community.post_cities","schema":"community","kind":"enviado","note":"Só no enviado. Mesma decisão em aberto.","onlyOurs":[],"onlyTheirs":["post_id","city_id"],"both":[]},{"key":"community.post_countries","schema":"community","kind":"enviado","note":"Só no enviado. Mesma decisão em aberto.","onlyOurs":[],"onlyTheirs":["post_id","country_id"],"both":[]},{"key":"community.post_likes","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["post_id","user_id","created_at"]},{"key":"community.post_media","schema":"community","kind":"diverge","note":"","onlyOurs":["width","height","duration_seconds","byte_size","is_cover"],"onlyTheirs":[],"both":["id","post_id","media_type","storage_key","thumbnail_key","sort_order","created_at"]},{"key":"community.post_mentions","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","post_id","mentioned_user_id","created_at"]},{"key":"community.post_places","schema":"community","kind":"diverge","note":"Só no enviado. Espera a decisão de uma publicação citar vários lugares.","onlyOurs":["sort_order"],"onlyTheirs":[],"both":["post_id","place_id"]},{"key":"community.posts","schema":"community","kind":"diverge","note":"Uma avaliação de parada também é uma publicação, com um lugar. Citar vários lugares ainda está em aberto.","onlyOurs":["origin"],"onlyTheirs":[],"both":["id","user_id","content","status","visibility","created_at","updated_at","published_at","deleted_at"]},{"key":"community.saved_posts","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["user_id","post_id","created_at"]},{"key":"community.user_blocks","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["blocker_user_id","blocked_user_id","created_at"]},{"key":"community.user_follow_requests","schema":"community","kind":"nosso","note":"","onlyOurs":["requester_user_id","target_user_id","status","created_at","resolved_at"],"onlyTheirs":[],"both":[]},{"key":"community.user_follows","schema":"community","kind":"diverge","note":"O nosso chama de follower quem segue. O enviado usa following_user_id no mesmo papel.","onlyOurs":["follower_user_id"],"onlyTheirs":["following_user_id"],"both":["followed_user_id","created_at"]},{"key":"community.user_mutes","schema":"community","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["muter_user_id","muted_user_id","created_at"]},{"key":"community.user_reports","schema":"community","kind":"enviado","note":"No enviado está em community. No nosso está em moderation, que é a fila do painel.","onlyOurs":[],"onlyTheirs":["id","reporter_user_id","reported_user_id","post_id","comment_id","review_id","category_id","description","status","created_at","resolved_at"],"both":[]},{"key":"finance.currency_definitions","schema":"finance","kind":"diverge","note":"","onlyOurs":["is_display"],"onlyTheirs":[],"both":["code","name","symbol","decimal_places","is_active"]},{"key":"finance.exchange_rates","schema":"finance","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","base_currency","target_currency","exchange_rate","provider","rate_date","fetched_at"]},{"key":"finance.expense_categories","schema":"finance","kind":"diverge","note":"","onlyOurs":["legend_color"],"onlyTheirs":["is_active"],"both":["id","name","slug","icon","sort_order"]},{"key":"finance.expense_participants","schema":"finance","kind":"diverge","note":"Quem entra na divisão igual. Percentual e valor pago por pessoa antecipam a divisão desigual.","onlyOurs":["participant_id","allocation_type","allocation_value"],"onlyTheirs":["user_id","share_percentage","paid_amount"],"both":["id","expense_id","share_amount","created_at"]},{"key":"finance.expense_splits","schema":"finance","kind":"enviado","note":"","onlyOurs":[],"onlyTheirs":["id","expense_id","user_id","amount","currency","created_at"],"both":[]},{"key":"finance.expenses","schema":"finance","kind":"diverge","note":"O valor original fica guardado, com quem pagou. Recibo e o tipo de divisão desigual ainda estão em aberto, e o enviado já cria os dois.","onlyOurs":["paid_by_participant_id","amount_original","currency_original","fx_rate_date","context","is_estimate","receipt_mime"],"onlyTheirs":["amount","currency","split_type"],"both":["id","trip_id","created_by_user_id","category_id","title","description","expense_date","receipt_storage_key","created_at","updated_at","deleted_at"]},{"key":"finance.settlements","schema":"finance","kind":"diverge","note":"","onlyOurs":["payer_participant_id","receiver_participant_id","undone_at"],"onlyTheirs":["payer_user_id","receiver_user_id"],"both":["id","trip_id","amount","currency","settled_at","created_at"]},{"key":"geography.cities","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","country_id","region_id","name","latitude","longitude","timezone","created_at"]},{"key":"geography.continents","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","name","code"]},{"key":"geography.countries","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","continent_id","name","iso2","iso3","phone_code","created_at"]},{"key":"geography.geographic_aliases","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","entity_type","entity_id","alias","locale"]},{"key":"geography.geographic_translations","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","entity_type","entity_id","locale","translated_name"]},{"key":"geography.regions","schema":"geography","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","country_id","name","region_type"]},{"key":"identity.user_auth_providers","schema":"identity","kind":"igual","note":"Google fica separado da senha nos dois. Conta só com Google não tem password_hash.","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","provider","provider_user_id","created_at"]},{"key":"identity.user_documents","schema":"identity","kind":"diverge","note":"Só no enviado. Documento pessoal do perfil ainda está em aberto. Documento da viagem fica em organization.trip_documents.","onlyOurs":["byte_size","barcode_payload","wallet_provider","wallet_object_id"],"onlyTheirs":[],"both":["id","user_id","document_type","file_name","storage_key","mime_type","created_at","deleted_at"]},{"key":"identity.user_handoff_codes","schema":"identity","kind":"nosso","note":"Só no nosso. O app abre o site com um código opaco de uso único. A duração ainda está em aberto.","onlyOurs":["id","user_id","code_hash","expires_at","used_at","created_at"],"onlyTheirs":[],"both":[]},{"key":"identity.user_preferences","schema":"identity","kind":"diverge","note":"O nosso guarda “minha localização” para idioma e moeda. Tema claro/noturno fica no aparelho e não entra nos dois.","onlyOurs":["follow_device_locale","follow_device_currency"],"onlyTheirs":[],"both":["id","user_id","locale","display_currency","timezone","created_at","updated_at"]},{"key":"identity.user_profiles","schema":"identity","kind":"diverge","note":"O app edita um nome, usuário, cidade, link e bio de 150 caracteres. O enviado separa nome e sobrenome e pede telefone e nascimento, que a folha não tem.","onlyOurs":["display_name","home_city_label","country_id","website_url","avatar_storage_key","visibility"],"onlyTheirs":["first_name","last_name","avatar_url","birth_date","phone"],"both":["id","user_id","username","bio","created_at","updated_at"]},{"key":"identity.user_sessions","schema":"identity","kind":"diverge","note":"Falta no enviado a família do refresh. Reusar um token já consumido revoga a família inteira. O access token não fica no banco.","onlyOurs":["family_id","keep_signed_in","access_tier","consumed_at"],"onlyTheirs":[],"both":["id","user_id","refresh_token_hash","device_name","ip_address","expires_at","revoked_at","created_at"]},{"key":"identity.user_verification_codes","schema":"identity","kind":"diverge","note":"Cadastro e senha nova: 4 dígitos, 10 minutos, 5 tentativas, reenvio em 30 segundos. O enviado não guarda as tentativas.","onlyOurs":["attempts","last_sent_at"],"onlyTheirs":[],"both":["id","user_id","code_hash","purpose","expires_at","used_at","created_at"]},{"key":"identity.user_visited_cities","schema":"identity","kind":"diverge","note":"","onlyOurs":["visit_source","trip_id"],"onlyTheirs":[],"both":["id","user_id","city_id","visited_at","created_at"]},{"key":"identity.user_visited_countries","schema":"identity","kind":"diverge","note":"","onlyOurs":["visit_source","trip_id"],"onlyTheirs":[],"both":["id","user_id","country_id","visited_at","created_at"]},{"key":"identity.users","schema":"identity","kind":"regra","note":"Os dois têm a conta. O nosso status é pending, active e inactive, como o painel. O enviado usa suspended e deleted além de deleted_at.","onlyOurs":[],"onlyTheirs":[],"both":["id","email","password_hash","status","email_verified_at","last_login_at","created_at","updated_at","deleted_at"]},{"key":"ingestion.content_ai_validations","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","model","relevance_score","quality_score","duplicate_score","place_match_score","result","created_at"]},{"key":"ingestion.content_licenses","schema":"ingestion","kind":"diverge","note":"","onlyOurs":["license_label"],"onlyTheirs":["license_type"],"both":["id","ingestion_item_id","license_name","license_url","attribution_text","evidence_url","verified_at","expires_at"]},{"key":"ingestion.content_provenance","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","source_url","source_name","collected_at","attribution","license_evidence","metadata"]},{"key":"ingestion.content_source_policies","schema":"ingestion","kind":"diverge","note":"O nosso não escolhe o tipo de licença. Guardar e republicar começam desligados até a fonte ser autorizada.","onlyOurs":["license_label"],"onlyTheirs":["license_type"],"both":["id","source_id","terms_url","attribution_required","can_store","can_republish","can_embed","rate_limit_per_minute","valid_from","valid_until","reviewed_at","reviewed_by_admin_id","notes"]},{"key":"ingestion.content_sources","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","name","source_type","base_url","provider","is_active","created_at","updated_at"]},{"key":"ingestion.ingestion_item_media","schema":"ingestion","kind":"diverge","note":"","onlyOurs":["license_label"],"onlyTheirs":["license_type"],"both":["id","ingestion_item_id","media_type","original_url","storage_key","attribution","created_at"]},{"key":"ingestion.ingestion_item_metadata","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","metadata_key","metadata_value"]},{"key":"ingestion.ingestion_items","schema":"ingestion","kind":"regra","note":"Os estados do nosso seguem o contrato: discovered até removed, com failed e removal_requested. O enviado usa uma lista mais curta.","onlyOurs":[],"onlyTheirs":[],"both":["id","source_id","external_id","place_id","title","description","original_url","status","content_hash","collected_at","reviewed_at","created_at","updated_at"]},{"key":"ingestion.ingestion_job_items","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","job_id","external_item_id","status","error_message","processed_at","created_at"]},{"key":"ingestion.ingestion_jobs","schema":"ingestion","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","source_id","status","job_type","started_at","finished_at","items_collected","items_failed","error_message","created_at"]},{"key":"integration.external_provider_accounts","schema":"integration","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","provider","account_name","credentials_reference","is_active","created_at","updated_at"]},{"key":"integration.external_references","schema":"integration","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","entity_type","entity_id","provider","external_id","external_url","created_at"]},{"key":"integration.external_sync_jobs","schema":"integration","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","provider_account_id","sync_type","status","started_at","finished_at","error_message","created_at"]},{"key":"integration.integration_logs","schema":"integration","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","provider","operation","status","request_id","response_code","error_message","duration_ms","created_at"]},{"key":"itinerary.itinerary_days","schema":"itinerary","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","itinerary_id","trip_destination_id","day_number","date","title","notes","sort_order"]},{"key":"itinerary.itinerary_generation_jobs","schema":"itinerary","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","trip_id","requested_by_user_id","status","input_data","error_message","started_at","finished_at","created_at"]},{"key":"itinerary.itinerary_generation_results","schema":"itinerary","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","job_id","itinerary_id","result_data","created_at"]},{"key":"itinerary.itinerary_optimization_runs","schema":"itinerary","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","itinerary_id","requested_by_user_id","status","input_data","result_data","created_at","completed_at"]},{"key":"itinerary.itinerary_stops","schema":"itinerary","kind":"diverge","note":"O nosso guarda custo estimado e o Feito da parada. O enviado não.","onlyOurs":["estimated_cost","estimated_currency","completed_at","completed_by_user_id"],"onlyTheirs":[],"both":["id","itinerary_day_id","place_id","title","description","start_time","end_time","duration_minutes","sort_order","notes","created_at"]},{"key":"itinerary.itinerary_transfers","schema":"itinerary","kind":"diverge","note":"Duração em segundos, distância, geometria e referência do provedor. O enviado guarda minutos e não guarda a rota.","onlyOurs":["duration_seconds","geometry","provider_reference"],"onlyTheirs":["duration_minutes"],"both":["id","itinerary_day_id","from_stop_id","to_stop_id","transport_type","distance_meters","notes"]},{"key":"itinerary.trip_itineraries","schema":"itinerary","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","trip_id","version","title","description","is_active","created_by_user_id","created_at","updated_at"]},{"key":"maya.maya_conversations","schema":"maya","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","trip_id","title","created_at","updated_at"]},{"key":"maya.maya_feedback","schema":"maya","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","conversation_id","message_id","rating","feedback_text","created_at"]},{"key":"maya.maya_messages","schema":"maya","kind":"igual","note":"Texto e atalho. Não grava viagem, gasto nem roteiro.","onlyOurs":[],"onlyTheirs":[],"both":["id","conversation_id","role","content","model","input_tokens","output_tokens","latency_ms","created_at"]},{"key":"maya.maya_model_configs","schema":"maya","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","provider","model_name","configuration","is_active","created_at","updated_at"]},{"key":"maya.maya_usage","schema":"maya","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","conversation_id","model","input_tokens","output_tokens","estimated_cost","currency","created_at"]},{"key":"moderation.content_publications","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","place_id","published_by_admin_id","published_at","removed_at","removal_reason"]},{"key":"moderation.content_removal_requests","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","publication_id","requester_email","reason","status","created_at","resolved_at"]},{"key":"moderation.content_review_decisions","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","task_id","admin_user_id","decision","reason","created_at"]},{"key":"moderation.content_review_tasks","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","ingestion_item_id","report_id","assigned_admin_id","status","priority","created_at","completed_at"]},{"key":"moderation.moderation_actions","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","admin_user_id","target_user_id","target_content_type","target_content_id","action_type","reason","expires_at","created_at"]},{"key":"moderation.moderation_appeals","schema":"moderation","kind":"diverge","note":"","onlyOurs":["requester_email","channel"],"onlyTheirs":[],"both":["id","moderation_action_id","user_id","reason","status","reviewed_by_admin_id","created_at","reviewed_at"]},{"key":"moderation.report_categories","schema":"moderation","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","name","description","is_active"]},{"key":"moderation.user_reports","schema":"moderation","kind":"nosso","note":"Denúncia de publicação, comentário ou perfil. Os motivos da tela já nascem semeados.","onlyOurs":["id","reporter_user_id","reported_user_id","post_id","comment_id","review_id","category_id","description","status","created_at","resolved_at"],"onlyTheirs":[],"both":[]},{"key":"notification.device_push_tokens","schema":"notification","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","device_id","platform","push_token","is_active","last_used_at","created_at"]},{"key":"notification.notification_deliveries","schema":"notification","kind":"igual","note":"As colunas coincidem. A leitura da central fica em notifications.read_at.","onlyOurs":[],"onlyTheirs":[],"both":["id","notification_id","channel","status","provider_message_id","error_message","sent_at","created_at"]},{"key":"notification.notification_events","schema":"notification","kind":"nosso","note":"Só no nosso. Histórico do envio, como no contrato técnico.","onlyOurs":["id","notification_id","event_type","detail","created_at"],"onlyTheirs":[],"both":[]},{"key":"notification.notification_templates","schema":"notification","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","event_type","locale","channel","title_template","body_template","is_active"]},{"key":"notification.notifications","schema":"notification","kind":"igual","note":"Central do app. Toda notificação de produto também sai em push. Não há preferência por tipo.","onlyOurs":[],"onlyTheirs":[],"both":["id","user_id","event_type","title","message","payload","read_at","created_at"]},{"key":"organization.packing_catalog_items","schema":"organization","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","category_id","name","description","is_default","sort_order"]},{"key":"organization.packing_categories","schema":"organization","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","name","sort_order","is_active"]},{"key":"organization.packing_list_viewers","schema":"organization","kind":"nosso","note":"","onlyOurs":["owner_participant_id","viewer_participant_id","created_at"],"onlyTheirs":[],"both":[]},{"key":"organization.shopping_items","schema":"organization","kind":"diverge","note":"O negócio pede loja e link. Atribuir a compra a uma pessoa ainda está em aberto, e o enviado já tem essa coluna.","onlyOurs":["store_name","url","expense_id"],"onlyTheirs":["assigned_user_id"],"both":["id","trip_id","created_by_user_id","name","quantity","estimated_price","currency","is_purchased","created_at","updated_at"]},{"key":"organization.trip_documents","schema":"organization","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","trip_id","uploaded_by_user_id","name","document_type","storage_key","mime_type","file_size","created_at","deleted_at"]},{"key":"organization.trip_links","schema":"organization","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","trip_id","created_by_user_id","title","url","description","created_at"]},{"key":"organization.trip_packing_items","schema":"organization","kind":"diverge","note":"A mala é uma lista da viagem. Mala individual ainda está em aberto. O enviado atribui o item a uma pessoa.","onlyOurs":["participant_id","category_id","deleted_at"],"onlyTheirs":["assigned_user_id"],"both":["id","trip_id","catalog_item_id","name","quantity","is_packed","notes","created_at","updated_at"]},{"key":"platform.feature_flags","schema":"platform","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","flag_key","description","is_enabled","configuration","updated_by_admin_id","updated_at"]},{"key":"platform.idempotency_keys","schema":"platform","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","idempotency_key","scope","response_status","response_body","expires_at","created_at"]},{"key":"platform.outbox_events","schema":"platform","kind":"igual","note":"Os dois têm outbox. Nome de tópico e contrato do evento ainda estão em aberto.","onlyOurs":[],"onlyTheirs":[],"both":["id","aggregate_type","aggregate_id","event_type","payload","published_at","created_at"]},{"key":"platform.processed_events","schema":"platform","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","consumer_name","event_id","processed_at"]},{"key":"platform.scheduled_job_runs","schema":"platform","kind":"igual","note":"A expiração de assinatura é job diário, não fila.","onlyOurs":[],"onlyTheirs":[],"both":["id","job_name","status","started_at","finished_at","result","error_message","created_at"]},{"key":"platform.system_settings","schema":"platform","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","setting_key","setting_value","description","updated_by_admin_id","updated_at"]},{"key":"subscription.coupons","schema":"subscription","kind":"nosso","note":"Só no nosso. Código de período grátis, como no painel.","onlyOurs":["id","code","free_days","valid_until","is_active","created_at","updated_at"],"onlyTheirs":[],"both":[]},{"key":"subscription.payment_method_settings","schema":"subscription","kind":"nosso","note":"Só no nosso. Cartão, boleto e Pix. O último ligado não desliga.","onlyOurs":["method","is_enabled","updated_at"],"onlyTheirs":[],"both":[]},{"key":"subscription.plan_features","schema":"subscription","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","plan_id","feature_key","feature_value","created_at"]},{"key":"subscription.plan_prices","schema":"subscription","kind":"diverge","note":"","onlyOurs":["duration_days"],"onlyTheirs":[],"both":["id","plan_id","currency","billing_period","amount","provider_price_id","is_active"]},{"key":"subscription.plan_translations","schema":"subscription","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","plan_id","locale","name","description"]},{"key":"subscription.plans","schema":"subscription","kind":"diverge","note":"","onlyOurs":["is_free"],"onlyTheirs":[],"both":["id","code","name","description","is_active","created_at","updated_at"]},{"key":"subscription.promo_grants","schema":"subscription","kind":"nosso","note":"Só no nosso. 30 dias de PRO sem cobrança na Asaas.","onlyOurs":["id","user_id","granted_by_admin_id","starts_at","ends_at","revoked_at","created_at"],"onlyTheirs":[],"both":[]},{"key":"subscription.refunds","schema":"subscription","kind":"nosso","note":"Só no nosso. Estorno aprovado no painel e enviado à Asaas.","onlyOurs":["id","subscription_id","payment_id","approved_by_admin_id","status","provider_refund_id","reason","failure_reason","created_at","resolved_at"],"onlyTheirs":[],"both":[]},{"key":"subscription.subscription_events","schema":"subscription","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","subscription_id","provider","event_type","provider_event_id","payload","processed_at","created_at"]},{"key":"subscription.subscription_payments","schema":"subscription","kind":"diverge","note":"","onlyOurs":["refunded_at"],"onlyTheirs":[],"both":["id","subscription_id","provider_payment_id","amount","currency","status","paid_at","created_at"]},{"key":"subscription.user_subscriptions","schema":"subscription","kind":"diverge","note":"O nosso aponta cupom ou PRO promocional. Sem identificador na Asaas quando não houve cobrança.","onlyOurs":["coupon_id","promo_grant_id","cancel_at_period_end","refunded_at"],"onlyTheirs":[],"both":["id","user_id","plan_id","plan_price_id","status","provider","provider_subscription_id","started_at","current_period_start","current_period_end","cancelled_at","created_at","updated_at"]},{"key":"travel.trip_clones","schema":"travel","kind":"igual","note":"","onlyOurs":[],"onlyTheirs":[],"both":["id","original_trip_id","cloned_trip_id","cloned_by_user_id","created_at"]},{"key":"travel.trip_destinations","schema":"travel","kind":"diverge","note":"O nosso aceita cidade do catálogo ou um nome digitado quando a busca não acha.","onlyOurs":["custom_name"],"onlyTheirs":[],"both":["id","trip_id","city_id","arrival_date","departure_date","sort_order","created_at"]},{"key":"travel.trip_invitation_tokens","schema":"travel","kind":"diverge","note":"Só no enviado. Convite por link, além do e-mail, ainda está em aberto.","onlyOurs":["opened_at"],"onlyTheirs":["expires_at","used_at"],"both":["id","invitation_id","token_hash","created_at"]},{"key":"travel.trip_invitations","schema":"travel","kind":"diverge","note":"O nosso é convite por e-mail, com aceitar e recusar. Sem token.","onlyOurs":["participant_id","channel","declined_at"],"onlyTheirs":["expires_at"],"both":["id","trip_id","invited_by_user_id","invited_email","invited_user_id","role","status","accepted_at","created_at"]},{"key":"travel.trip_ownership_transfers","schema":"travel","kind":"nosso","note":"","onlyOurs":["id","trip_id","from_user_id","to_user_id","created_at"],"onlyTheirs":[],"both":[]},{"key":"travel.trip_participants","schema":"travel","kind":"diverge","note":"Papel nesta viagem, não no usuário. Saída fica em removed_at. Convidar e remover para supremo e experiente continua em aberto na regra, não na tabela.","onlyOurs":["display_name","party_kind","removed_at"],"onlyTheirs":["status","left_at"],"both":["id","trip_id","user_id","role","joined_at","created_at"]},{"key":"travel.trips","schema":"travel","kind":"diverge","note":"O enviado tem status, inclusive cancelled, que o negócio não tem. O cartão sai das datas. Faltam dias do rascunho, pública ou privada, como a viagem começa e adultos e crianças.","onlyOurs":["cover_storage_key","duration_days","visibility","start_mode","source_itinerary_id","adult_count","child_count","budget_amount","budget_currency"],"onlyTheirs":["cover_image_key","status"],"both":["id","owner_user_id","title","description","start_date","end_date","created_at","updated_at","deleted_at"]}];
+    const counts = {"tabelasNossas":127,"tabelasEnviadas":120,"igual":73,"regra":3,"diverge":40,"nosso":11,"enviado":4};
+    const labels = { igual: 'Igual', regra: 'Outra regra', diverge: 'Diverge', nosso: 'Só no nosso', enviado: 'Só no enviado' };
+    const stats = document.getElementById('stats');
+    stats.innerHTML = [
+      [counts.tabelasNossas, 'Tabelas no nosso'],
+      [counts.tabelasEnviadas, 'Tabelas no enviado'],
+      [counts.diverge, 'Mesmo nome, colunas diferentes'],
+      [counts.nosso + counts.enviado, 'Tabelas só de um lado'],
+    ].map(([n, label]) => '<div class="stat"><b>' + n + '</b><span>' + label + '</span></div>').join('');
+
+    let kind = 'todos';
+    let q = '';
+    let current = rows.find((r) => r.kind === 'diverge')?.key ?? rows[0].key;
+
+    function visible() {
+      return rows.filter((r) => {
+        if (kind !== 'todos' && r.kind !== kind) return false;
+        if (!q) return true;
+        const blob = (r.key + ' ' + r.onlyOurs.join(' ') + ' ' + r.onlyTheirs.join(' ') + ' ' + r.both.join(' ') + ' ' + r.note).toLowerCase();
+        return blob.includes(q);
+      });
+    }
+
+    function listOf(items, empty) {
+      if (!items.length) return '<li class="empty">' + empty + '</li>';
+      return items.map((c) => '<li>' + c + '</li>').join('');
+    }
+
+    function render() {
+      const shown = visible();
+      if (!shown.some((r) => r.key === current) && shown[0]) current = shown[0].key;
+      document.getElementById('list').innerHTML = shown.map((r) =>
+        '<button class="row" data-key="' + r.key + '"' + (r.key === current ? ' aria-current="true"' : '') + '><span><small>' + r.schema + '</small><br>' + r.key.split('.')[1] + '</span><span class="pill ' + r.kind + '">' + labels[r.kind] + '</span></button>'
+      ).join('') || '<p class="note">Nenhuma tabela com esse filtro.</p>';
+      const r = rows.find((row) => row.key === current);
+      document.getElementById('detail').innerHTML = r ? (
+        '<h2>' + r.key + '</h2>' +
+        '<p><span class="pill ' + r.kind + '">' + labels[r.kind] + '</span></p>' +
+        '<p class="note">' + (r.note || 'Mesmas colunas de nome, ou a tabela só existe de um lado.') + '</p>' +
+        '<div class="cols">' +
+          '<section><h3>Só no enviado</h3><ul>' + listOf(r.onlyTheirs, 'Nenhuma') + '</ul></section>' +
+          '<section><h3>Nos dois</h3><ul>' + listOf(r.both, 'Nenhuma') + '</ul></section>' +
+          '<section><h3>Só no nosso</h3><ul>' + listOf(r.onlyOurs, 'Nenhuma') + '</ul></section>' +
+        '</div>'
+      ) : '';
+    }
+
+    document.querySelector('.bar').addEventListener('click', (event) => {
+      const chip = event.target.closest('[data-kind]');
+      if (!chip) return;
+      kind = chip.dataset.kind;
+      for (const button of document.querySelectorAll('.chip')) button.setAttribute('aria-pressed', String(button === chip));
+      render();
+    });
+    document.getElementById('q').addEventListener('input', (event) => {
+      q = event.target.value.trim().toLowerCase();
+      render();
+    });
+    document.getElementById('list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-key]');
+      if (!button) return;
+      current = button.dataset.key;
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>

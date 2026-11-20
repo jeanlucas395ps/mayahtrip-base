@@ -1,9 +1,9 @@
 # Entrar com biometria (Face ID / digital)
 
 - Slug: `biometric-sign-in`
-- Status: `rascunho`
+- Status: `em execução` — ViewModel, adaptadores reais (`local_auth`/`flutter_secure_storage`) e telas implementados e testados em 2026-11-18 (`mayahtrip-app`); AC-2 (indisponibilidade real do aparelho) e AC-6 do plano de testes (inspeção manual em dispositivo) não foram feitos nesta entrega
 - Data: 2026-11-16
-- Última atualização: 2026-11-16
+- Última atualização: 2026-11-18
 - Responsável: TODO: pessoa/agente
 - Repositório: `mayahtrip-app`
 - Docs relacionados: `.docs/BUSINESS/00-abertura.md`, `.docs/BUSINESS/01-login.md`, `.docs/ARCHITECTURE.md`, `.docs/RULES.md`, `.docs/DEVELOPMENT.md`
@@ -65,12 +65,12 @@ Abertura sem biometria habilitada: comportamento inalterado, segue `.specs/001-a
 
 ## 7. Critérios de aceite
 
-- [ ] **AC-1** — Dado um login bem-sucedido e um aparelho com biometria disponível, quando a pessoa opta por habilitar Face ID/digital, então o refresh token é guardado no cofre seguro do sistema operacional e a preferência fica habilitada; verificado por teste de integração no app.
-- [ ] **AC-2** — Dado um aparelho sem biometria disponível ou configurada, quando a tela de habilitar é mostrada, então a opção não aparece ou aparece desabilitada; verificado por teste manual/widget com biometria mockada como indisponível.
-- [ ] **AC-3** — Dado biometria habilitada e refresh token guardado válido, quando o app abre e a biometria é aceita, então um novo access token é obtido via refresh e a pessoa chega ao Início sem ver a tela de login; verificado por teste de integração com biometria e API mockadas.
-- [ ] **AC-4** — Dado biometria habilitada, quando a biometria é recusada ou cancelada na abertura, então a pessoa cai na tela de login normal e o refresh token guardado permanece intacto; verificado por teste de integração.
-- [ ] **AC-5** — Dado biometria habilitada mas o refresh token guardado foi revogado no servidor, quando a biometria é aceita na abertura, então a troca por access token falha, o refresh guardado é removido do cofre seguro, e a pessoa cai na tela de login normal; verificado por teste de integração com API mockada retornando refresh inválido.
-- [ ] **AC-6** — Dado que a pessoa desabilita a biometria, quando a ação é confirmada, então o refresh token é removido do cofre seguro do aparelho; verificado por teste de integração.
+- [x] **AC-1** — Dado um login bem-sucedido e um aparelho com biometria disponível, quando a pessoa opta por habilitar Face ID/digital, então o refresh token é guardado no cofre seguro do sistema operacional e a preferência fica habilitada; verificado por teste de widget (`sign_in_view_test.dart`).
+- [x] **AC-2** — Dado um aparelho sem biometria disponível ou configurada, quando a tela de habilitar é mostrada, então a opção não aparece ou aparece desabilitada; verificado por teste de widget com biometria mockada como indisponível (`sign_in_view_test.dart`); D-5 — a verificação com biometria indisponível de verdade num aparelho real não foi feita.
+- [x] **AC-3** — Dado biometria habilitada e refresh token guardado válido, quando o app abre e a biometria é aceita, então um novo access token é obtido via refresh e a pessoa chega ao Início sem ver a tela de login; verificado por teste de unidade (`abertura_view_model_test.dart`) com biometria e troca de refresh mockadas.
+- [x] **AC-4** — Dado biometria habilitada, quando a biometria é recusada ou cancelada na abertura, então a pessoa cai na tela de login normal e o refresh token guardado permanece intacto; verificado por teste de unidade (`abertura_view_model_test.dart`).
+- [x] **AC-5** — Dado biometria habilitada mas o refresh token guardado foi revogado no servidor, quando a biometria é aceita na abertura, então a troca por access token falha, o refresh guardado é removido do cofre seguro, e a pessoa cai na tela de login normal; verificado por teste de unidade (`abertura_view_model_test.dart`) com porta de refresh mockada recusando.
+- [x] **AC-6** — Dado que a pessoa desabilita a biometria, quando a ação é confirmada, então o refresh token é removido do cofre seguro do aparelho; verificado por teste de widget (`perfil_view_test.dart`, interruptor nas Configurações do Perfil).
 
 ## 8. Premissas e decisões
 
@@ -80,6 +80,8 @@ Abertura sem biometria habilitada: comportamento inalterado, segue `.specs/001-a
 | D-1 | decisão | Refresh token armazenado no cofre seguro do sistema operacional (Keychain iOS / Keystore Android), nunca em armazenamento não criptografado — pedido explícito do responsável do produto (segurança é prioridade) | autor da spec | Nenhuma — decisão de segurança fechada |
 | D-2 | decisão proposta, não bloqueante | Local do toggle de habilitar/desabilitar biometria (tela de login, abertura, ou perfil) | produto/design | Confirmar antes de desenhar a tela |
 | D-3 | decisão proposta, não bloqueante | Comportamento exato quando o aparelho tem biometria mas ela está temporariamente indisponível (ex.: rosto coberto) — repetir prompt, quantas vezes, antes de cair para login | produto/design | Confirmar antes de implementar |
+| D-4 | decisão (resolve D-2) | Sem tela própria no protótipo para esta decisão (D-1 do contexto: biometria não está em nenhum protótipo). Convite para habilitar aparece uma vez, por diálogo simples, logo após um login bem-sucedido (`SignInView`); desligar/religar depois mora nas Configurações do Perfil (`030-perfil.md`), como um interruptor. Sem inspeção de protótipo possível aqui — visual simples com os tokens existentes, não pixel a pixel. | app | revisão desta spec |
+| D-5 | decisão | Este app nunca fala com API real em nenhuma fatia (padrão do projeto). "Trocar o refresh por access token" (`sign-in-api`) é uma porta mocada (`RefreshTokenRepository`) que aceita qualquer refresh não vazio por padrão; testes injetam uma versão que recusa para cobrir o AC-5. O valor do próprio refresh token também é mocado (`refreshTokenMocadoDoApp`, fixo), já que não existe um access/refresh real de verdade nesta fila. | app | revisão desta spec |
 
 ## 9. Impactos
 
@@ -112,8 +114,8 @@ Abertura sem biometria habilitada: comportamento inalterado, segue `.specs/001-a
 
 | Pergunta | Bloqueante? | Dono | Prazo |
 | --- | --- | --- | --- |
-| Local do toggle de habilitar/desabilitar (D-2) | não | produto/design | antes de desenhar a tela |
-| Comportamento de retry quando a biometria falha temporariamente (D-3) | não | produto/design | antes de implementar |
+| Local do toggle de habilitar/desabilitar (D-2) | não | produto/design | Resolvido nesta entrega — ver D-4 |
+| Comportamento de retry quando a biometria falha temporariamente (D-3) | não | produto/design | antes de implementar — nesta entrega, indisponibilidade cai direto para o login, sem repetir o prompt |
 | `BUSINESS/00-abertura.md` e `01-login.md` não mencionam biometria — precisam de atualização formal de produto | não | produto | — |
 
 ## 13. Resultado
