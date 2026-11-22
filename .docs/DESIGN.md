@@ -399,7 +399,7 @@ Abertura, login, carteira e geração de roteiro têm coreografias próprias des
 
 - Estilo **linha**, grade 24 × 24, traço **2 px**, pontas e junções **arredondadas**, `currentColor` (equivalente ao estilo Lucide). Ícones preenchidos só para: estrela, play, coração curtido.
 - Tamanhos: 12–14 (dentro de tags/chips), 16–18 (botões e linhas), 20–22 (navegação, ícones de lista), 24–28 (destaques, ações do feed).
-- Conjunto usado: search, home, compass, bag, user, users, plus, minus, back, right, down, arrowr, close, check, share, bell, pin, map, route, walk, car, cal, clock, heart, heartf, chat, bookmark, send, star, play, wallet, file, link, upload, copy, trash, camera, edit, eye, eyeoff, lock, mail, globe, flag, city, bed, plane, ticket, bus, health, wifi, food, landmark, coin, cloud, plug, bulb, spark, zap, crown, moon, sun, settings, filter, undo, dots, shirt.
+- Conjunto usado: search, home, compass, bag, user, users, plus, minus, back, right, down, arrowr, close, check, share, bell, pin, map, route, walk, car, cal, clock, heart, heartf, chat, bookmark, send, star, play, wallet, file, link, upload, copy, trash, camera, edit, eye, eyeoff, lock, mail, globe, flag, city, bed, plane, ticket, bus, health, wifi, food, landmark, coin, cloud, plug, bulb, spark, zap, crown, moon, sun, settings, filter, undo, dots, shirt, grip (6 pontos, alça de arrastar).
 - **Ícone padronizado (“jicon”)**: bloco roxo `#2B207F`, ícone lima, sombra roxa leve, raio ≈ 1/3. Usado em ações rápidas (48 px), Jornada (32 px), papéis (36 px), dica de 14 dias (32 px).
 - **Ícone de categoria**: bloco `#EBE8FF`, ícone roxo, raio 1/3 do lado (padrão 42 px, ícone 45% do lado).
 - Biblioteca Flutter de ícones: `A DEFINIR` (precisa ter o estilo acima).
@@ -488,6 +488,13 @@ Abertura, login, carteira e geração de roteiro têm coreografias próprias des
 ### Balão da Maya
 - 52 px, raio 26, fundo `#15122E`, avatar 38 px com borda lima 2 px + “Dúvidas? Maya” 14 px/700; versão mini 52 × 52 a 24 px da base fora das telas raiz.
 - Mensagens: IA branco raio 20/20/20/6; usuário roxo raio 20/20/6/20; 15 px; largura máx. 84%.
+
+### Itens reordenáveis e removíveis (cartões de parada)
+- **Alça de arrastar** sempre à esquerda do cartão: 22 px de largura × altura do cartão, ícone de 6 pontos (18 px) em `#BDB8D6` (noturno `#45406A`); hover/toque `#2B207F` sobre `#F4F3F8`, raio 10 px. O arraste começa **só pela alça**; o restante do cartão rola e abre o detalhe.
+- **Durante o arraste:** cartão em escala 1,02 + sombra `0 18px 40px rgba(21,18,46,.2)` (mola 200 ms); vizinhos deslizam 240 ms na curva `ease`; separadores entre itens somem; rolagem automática perto das bordas (70 px).
+- **Remover:** lixeira discreta no rodapé do cartão, 30 px, ícone 15 px `#9A97AB`; hover/toque `#D2462A` sobre `#FFE6E0` (noturno `#3A1F1A`). Sem confirmação: o item encolhe (260 ms) e o toast oferece **Desfazer**.
+- **Dica de descoberta:** linha 12 px `#8C889E` acima da lista (“Arraste para reordenar · para remover”, com os dois ícones) quando há 2+ itens.
+- **Teclado/leitor de tela:** alça focável com rótulo explícito; setas ↑/↓ movem uma posição.
 
 ### Lists
 - Linha: elemento visual à esquerda (thumb 40–64 px, avatar 32–44 px, ícone em bloco 40–44 px) · bloco de texto flexível (título 13–15 px/700, meta 12 px `#5E5A73`) · ação/valor/seta à direita. Vão 12–14 px.
@@ -604,6 +611,7 @@ Regras confirmadas pelo Jean durante o desenho do protótipo.
 - **Do** perguntar **a viagem primeiro** em fluxos de adicionar parada e gasto, e o **valor primeiro** (com moeda) no novo gasto.
 - **Do** usar cartões de vídeo editoriais (estilo Framer) para conteúdo da comunidade.
 - **Do** oferecer **Desfazer** no toast após qualquer remoção.
+- **Do** dar a toda lista reordenável uma **alça visível de 6 pontos** e a todo item removível uma **lixeira discreta** — nunca esconder essas ações só em gestos.
 - **Do** usar o anel de progresso circular com seta (canto inferior direito, anel lima) para avançar o feed.
 - **Do** mostrar status de viagem como selo sobre a imagem: “Em N dias”/“Acontecendo agora” no canto superior esquerdo; “Rascunho” no canto inferior direito.
 

@@ -132,6 +132,8 @@ Capturas do protótipo (`../index.html`) em **390 × 844 pt, densidade 2x (780 �
 - `17-roteiro-lista.png` — [claro](claro/17-roteiro-lista.png) · [noturno](noturno/17-roteiro-lista.png)
 - `17-roteiro-lista-parte2.png` — [claro](claro/17-roteiro-lista-parte2.png) · [noturno](noturno/17-roteiro-lista-parte2.png)
 - `17-roteiro-lista-parte3.png` — [claro](claro/17-roteiro-lista-parte3.png) · [noturno](noturno/17-roteiro-lista-parte3.png)
+- `17-roteiro-arrastando.png` — [claro](claro/17-roteiro-arrastando.png) · [noturno](noturno/17-roteiro-arrastando.png)
+- `17-roteiro-parada-removida.png` — [claro](claro/17-roteiro-parada-removida.png) · [noturno](noturno/17-roteiro-parada-removida.png)
 - `17-roteiro-parada-feita.png` — [claro](claro/17-roteiro-parada-feita.png) · [noturno](noturno/17-roteiro-parada-feita.png)
 - `17-roteiro-dia-livre.png` — [claro](claro/17-roteiro-dia-livre.png) · [noturno](noturno/17-roteiro-dia-livre.png)
 

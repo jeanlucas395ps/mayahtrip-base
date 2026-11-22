@@ -16,5 +16,5 @@ Toque num cartão de parada (lista ou cartão do mapa).
 ## Regras
 - **Feito**: fecha a folha, atualiza o roteiro e mostra “{lugar} feito” + **Avaliar**.
 - **Gasto**: fecha a folha, muda para a aba Gastos e abre o Novo gasto já com descrição = nome do lugar, valor = preço estimado e vínculo com a parada.
-- **Remover**: retira a parada do dia (confirmação/desfazer: `A DEFINIR`).
+- **Remover**: fecha a folha e remove a parada com a mesma regra do cartão (sem confirmação, com **Desfazer**; ver `17`).
 - Assistente júnior: só leitura (sem Feito, Gasto, Remover). Avaliar continua disponível? `A DEFINIR`.
